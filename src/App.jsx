@@ -10,14 +10,16 @@ import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import Loading from "./components/common/Loading";
 import { Toaster } from "react-hot-toast";
+import { useThemeStore } from "./store/useThemeStore";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { theme } = useThemeStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  console.log({ authUser });
+  // console.log({ authUser });
 
   // show loader until the user load
 
@@ -26,7 +28,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div data-theme={theme}className="min-h-screen bg-base-100 text-base-content transition-colors duration-300">
       <Navbar />
       <Routes>
         <Route
