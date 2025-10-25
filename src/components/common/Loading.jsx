@@ -1,4 +1,4 @@
-import { Loader } from "lucide-react";
+import { Loader, Loader2 } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
 
@@ -14,7 +14,7 @@ const Loading = () => {
         <div className="absolute w-16 h-16 rounded-full bg-gradient-to-tr from-pink-500 via-purple-500 to-blue-500 animate-spin-slow blur-[2px]"></div>
 
         {/* Lucide Loader Icon */}
-        <Loader
+        <Loader2
           size={24}
           className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-teal-400 to-green-400 animate-pulse"
         />

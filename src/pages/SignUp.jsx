@@ -22,16 +22,17 @@ const SignUp = () => {
     password: "",
   });
 
-  const { signup, isSigningUp } = useAuthStore();
+  const { signUp, isSigningUp } = useAuthStore();
 
   const validateForm = () => {
-    if (!formData.fullName.trim()) return toast.error("Full name is required");
-    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!formData.fullName.trim())
+      return toast.error("Full Name Is Required🙂");
+    if (!formData.email.trim()) return toast.error("Email Is Required😎");
     if (!/\S+@\S+\.\S+/.test(formData.email))
-      return toast.error("Invalid email format");
-    if (!formData.password) return toast.error("Password is required");
+      return toast.error("Invalid Email Format😒");
+    if (!formData.password) return toast.error("Password Is Required😒");
     if (formData.password.length < 6)
-      return toast.error("Password must be at least 6 characters");
+      return toast.error("Password Must Be At Least 6 Characters😭");
 
     return true;
   };
@@ -41,7 +42,7 @@ const SignUp = () => {
 
     const success = validateForm();
 
-    if (success === true) signup(formData);
+    if (success === true) signUp(formData);
   };
 
   return (
@@ -57,6 +58,7 @@ const SignUp = () => {
               group-hover:bg-primary/20 transition-colors"
               >
                 <MessageSquare className="size-6 text-primary" />
+                {/* <h2> PK Chat </h2> */}
               </div>
               <h1 className="text-2xl font-bold mt-2">Create Account</h1>
               <p className="text-base-content/60">
