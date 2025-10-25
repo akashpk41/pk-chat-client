@@ -8,3 +8,13 @@
 
 @import "tailwindcss";
 @plugin "daisyui";
+/*
+@plugin "daisyui" {
+  themes: {
+    light: true;
+    dark: true;
+    cupcake: true;
+    emerald: true;
+    corporate: true;
+  }
+} */

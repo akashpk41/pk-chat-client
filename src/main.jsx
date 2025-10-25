@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <div className="ubuntu-medium">
+    <div  className="ubuntu-medium">
       <BrowserRouter>
         <App />
       </BrowserRouter>
