@@ -1,20 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
-import { Users } from "lucide-react";
+import { Users, Filter } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
-import { useState } from "react";
 
 const Sidebar = () => {
   const { getUsers, users, selectedUser, isUserLoading, setSelectedUser } =
     useChatStore();
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+  const [lastSeenTexts, setLastSeenTexts] = useState({});
 
   useEffect(() => {
     getUsers();
   }, [getUsers]);
+
+  // Update last seen texts for offline users
+  useEffect(() => {
+    const updateLastSeenTexts = () => {
+      const newTexts = {};
+      users.forEach((user) => {
+        if (!onlineUsers.includes(user._id)) {
+          const lastSeenDate = user.lastSeen;
+          if (lastSeenDate) {
+            const now = new Date();
+            const lastSeen = new Date(lastSeenDate);
+            const diffInMs = now - lastSeen;
+            const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+            const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+            const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+            if (diffInMinutes < 60) {
+              newTexts[user._id] = `${diffInMinutes || 1}m`;
+            } else if (diffInHours < 24) {
+              newTexts[user._id] = `${diffInHours}h`;
+            } else {
+              newTexts[user._id] = `${diffInDays}d`;
+            }
+          } else {
+            newTexts[user._id] = "offline";
+          }
+        }
+      });
+      setLastSeenTexts(newTexts);
+    };
+
+    updateLastSeenTexts();
+    const interval = setInterval(updateLastSeenTexts, 60000);
+
+    return () => clearInterval(interval);
+  }, [users, onlineUsers]);
 
   const filteredUsers = showOnlineOnly
     ? users.filter((user) => onlineUsers.includes(user._id))
@@ -24,33 +60,56 @@ const Sidebar = () => {
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+      {/* Header */}
       <div className="border-b border-base-300 w-full p-5">
-        <div className="flex items-center gap-2">
+        {/* Mobile Layout */}
+        <div className="lg:hidden flex flex-col items-center gap-3">
           <Users className="size-6" />
-          <span className="font-medium hidden lg:block">Contacts</span>
-        </div>
+          <span className="text-xs text-zinc-500">({onlineUsers.length - 1})</span>
 
-        {/* Online filter toggle */}
-
-        <div className="mt-3  lg:flex items-center gap-2">
-          <label className="cursor-pointer flex items-center gap-2">
+          {/* Filter Toggle for Mobile */}
+          <label className="cursor-pointer flex flex-col items-center gap-1">
             <input
               type="checkbox"
               checked={showOnlineOnly}
               onChange={(e) => setShowOnlineOnly(e.target.checked)}
               className="checkbox checkbox-sm"
             />
-            <span className="text-sm">Show online only</span>
+            <span className="text-[10px] text-zinc-400">Filter</span>
           </label>
-          <span className="text-xs text-zinc-500">
-            ({onlineUsers.length - 1} online)
-          </span>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden lg:block">
+          <div className="flex items-center gap-2">
+            <Users className="size-6" />
+            <span className="font-medium">Contacts</span>
+          </div>
+
+          {/* Online filter toggle */}
+          <div className="mt-3 flex items-center gap-2">
+            <label className="cursor-pointer flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showOnlineOnly}
+                onChange={(e) => setShowOnlineOnly(e.target.checked)}
+                className="checkbox checkbox-sm"
+              />
+              <span className="text-sm">Show online only</span>
+            </label>
+            <span className="text-xs text-zinc-500">
+              ({onlineUsers.length - 1} online)
+            </span>
+          </div>
         </div>
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-        <div className="overflow-y-auto w-full py-3">
-          {filteredUsers.map((user) => (
+        {filteredUsers.map((user) => {
+          const isOnline = onlineUsers.includes(user._id);
+          const lastSeenText = lastSeenTexts[user._id];
+
+          return (
             <button
               key={user._id}
               onClick={() => setSelectedUser(user)}
@@ -70,30 +129,46 @@ const Sidebar = () => {
                   alt={user.name}
                   className="size-12 object-cover rounded-full"
                 />
-                {onlineUsers.includes(user._id) && (
+                {/* Green circle for online users */}
+                {isOnline && (
                   <span
                     className="absolute bottom-0 right-0 size-3 bg-green-500
                   rounded-full ring-2 ring-zinc-900"
                   />
+                )}
+                {/* Last seen badge for mobile - shows on top right of avatar */}
+                {!isOnline && lastSeenText && (
+                  <span
+                    className="lg:hidden absolute -top-1 -right-1 bg-zinc-700 text-white text-[10px]
+                    px-1.5 py-0.5 rounded-full font-medium"
+                  >
+                    {lastSeenText}
+                  </span>
                 )}
               </div>
 
               {/* User info - only visible on larger screens */}
               <div className="hidden lg:block text-left min-w-0">
                 <div className="font-medium truncate">{user.fullName}</div>
-                <div className="text-sm text-zinc-400">
-                  {onlineUsers.includes(user._id) ? "Online" : "Offline"}
+                <div className="text-sm">
+                  {isOnline ? (
+                    <span className="text-green-500">Online</span>
+                  ) : (
+                    <span className="text-zinc-400 text-xs">
+                      {lastSeenText}
+                    </span>
+                  )}
                 </div>
               </div>
             </button>
-          ))}
+          );
+        })}
 
-          {filteredUsers.length === 0 && (
-            <div className="text-center text-zinc-500 py-4">
-              No online users
-            </div>
-          )}
-        </div>
+        {filteredUsers.length === 0 && (
+          <div className="text-center text-zinc-500 py-4 text-sm lg:text-base">
+            No {showOnlineOnly ? "online" : ""} users
+          </div>
+        )}
       </div>
     </aside>
   );
