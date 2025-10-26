@@ -20,7 +20,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
   // console.log({ authUser });
-console.log(onlineUsers)
+// console.log(onlineUsers)
 
   // show loader until the user load
 

@@ -17,10 +17,12 @@ const ChatContainer = () => {
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     getMessages(selectedUser._id);
     subscribeToMessages();
+    isFirstLoad.current = true;
 
     return () => unsubscribeFromMessages();
   }, [
@@ -31,18 +33,23 @@ const ChatContainer = () => {
   ]);
 
   // auto scroll to the last message
-
   useEffect(() => {
-    if (messageEndRef.current && messages) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (messageEndRef.current && messages.length > 0) {
+      if (isFirstLoad.current) {
+        // First load - instant scroll without animation
+        messageEndRef.current.scrollIntoView({ behavior: "instant" });
+        isFirstLoad.current = false;
+      } else {
+        // New messages - smooth scroll
+        messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   }, [messages]);
 
   if (isMessageLoading) return <MessageSkeleton />;
 
   return (
-    <div className="flex flex-col flex-1  overflow-auto">
-      {" "}
+    <div className="flex flex-col flex-1 overflow-auto">
       <ChatHeader />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
@@ -51,9 +58,8 @@ const ChatContainer = () => {
             className={`chat ${
               message.senderId === authUser._id ? "chat-end" : "chat-start"
             }`}
-            ref={messageEndRef}
           >
-            <div className=" chat-image avatar">
+            <div className="chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
                   src={
@@ -82,8 +88,9 @@ const ChatContainer = () => {
             </div>
           </div>
         ))}
+        <div ref={messageEndRef} />
       </div>
-      <MessageInput />{" "}
+      <MessageInput />
     </div>
   );
 };
