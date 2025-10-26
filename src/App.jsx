@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router";
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -11,6 +10,7 @@ import { Loader } from "lucide-react";
 import Loading from "./components/common/Loading";
 import { Toaster } from "react-hot-toast";
 import { useThemeStore } from "./store/useThemeStore";
+import Navbar from "./components/common/Navbar";
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
