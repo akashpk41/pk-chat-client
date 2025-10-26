@@ -102,8 +102,67 @@ export const useAuthStore = create((set, get) => ({
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
+
+    // Setup global message listener for unread count
+    get().setupGlobalMessageListener();
   },
+
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
+setupGlobalMessageListener: () => {
+  const socket = get().socket;
+  if (!socket) return;
+
+  console.log("Setting up global message listener...");
+
+  // Import useChatStore dynamically to avoid circular dependency
+  import("./useChatStore").then(({ useChatStore }) => {
+    console.log("useChatStore imported successfully");
+
+    socket.on("newMessage", (newMessage) => {
+      console.log("New message received in global listener:", newMessage);
+
+      const chatState = useChatStore.getState();
+      const { selectedUser, unreadMessages = {} } = chatState;
+      const currentUserId = get().authUser?._id;
+
+      console.log("Current user ID:", currentUserId);
+      console.log("Message sender ID:", newMessage.senderId);
+      console.log("Selected user:", selectedUser);
+      console.log("Current unread messages:", unreadMessages);
+
+      if (newMessage.senderId === currentUserId) {
+        console.log("Message is from current user, ignoring...");
+        return;
+      }
+
+      if (!selectedUser || selectedUser._id !== newMessage.senderId) {
+        const currentCount = unreadMessages[newMessage.senderId] || 0;
+        const newCount = currentCount + 1;
+
+        console.log("Updating unread count:", {
+          senderId: newMessage.senderId,
+          oldCount: currentCount,
+          newCount: newCount
+        });
+
+        useChatStore.setState({
+          unreadMessages: {
+            ...unreadMessages,
+            [newMessage.senderId]: newCount,
+          },
+        });
+
+        console.log("Updated unread messages:", useChatStore.getState().unreadMessages);
+      } else {
+        console.log("Chat is open with sender, adding to messages...");
+        const currentMessages = chatState.messages || [];
+        useChatStore.setState({
+          messages: [...currentMessages, newMessage],
+        });
+      }
+    });
+  });
+},
 }));

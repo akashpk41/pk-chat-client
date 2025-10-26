@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
-import { Users, Filter } from "lucide-react";
+import { Users } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = () => {
-  const { getUsers, users, selectedUser, isUserLoading, setSelectedUser } =
+  const { getUsers, users, selectedUser, isUserLoading, setSelectedUser, unreadMessages } =
     useChatStore();
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [lastSeenTexts, setLastSeenTexts] = useState({});
+
+  console.log("Unread Messages:", unreadMessages);
 
   useEffect(() => {
     getUsers();
@@ -108,6 +110,7 @@ const Sidebar = () => {
         {filteredUsers.map((user) => {
           const isOnline = onlineUsers.includes(user._id);
           const lastSeenText = lastSeenTexts[user._id];
+          const unreadCount = unreadMessages?.[user._id] || 0;
 
           return (
             <button
@@ -136,20 +139,42 @@ const Sidebar = () => {
                   rounded-full ring-2 ring-zinc-900"
                   />
                 )}
-                {/* Last seen badge for mobile - shows on top right of avatar */}
-                {!isOnline && lastSeenText && (
-                  <span
-                    className="lg:hidden absolute -top-1 -right-1 bg-zinc-700 text-white text-[10px]
-                    px-1.5 py-0.5 rounded-full font-medium"
-                  >
-                    {lastSeenText}
-                  </span>
-                )}
+
+                {/* Mobile version: Show either unread count OR last seen */}
+                <div className="lg:hidden">
+                  {unreadCount > 0 ? (
+                    // Unread message badge - top right
+                    <span
+                      className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
+                      px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center"
+                    >
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  ) : (
+                    // Last seen badge - only if no unread messages
+                    !isOnline && lastSeenText && (
+                      <span
+                        className="absolute -top-1 -right-1 bg-zinc-700 text-white text-[10px]
+                        px-1.5 py-0.5 rounded-full font-medium"
+                      >
+                        {lastSeenText}
+                      </span>
+                    )
+                  )}
+                </div>
               </div>
 
               {/* User info - only visible on larger screens */}
-              <div className="hidden lg:block text-left min-w-0">
-                <div className="font-medium truncate">{user.fullName}</div>
+              <div className="hidden lg:block text-left min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="font-medium truncate">{user.fullName}</div>
+                  {/* Desktop: Unread count badge */}
+                  {unreadCount > 0 && (
+                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  )}
+                </div>
                 <div className="text-sm">
                   {isOnline ? (
                     <span className="text-green-500">Online</span>
