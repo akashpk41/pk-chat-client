@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { useChatStore } from "../../store/useChatStore";
+
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
+import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = () => {
   const { getUsers, users, selectedUser, isUserLoading, setSelectedUser } =
     useChatStore();
-  const {onlineUsers} = useAuthStore()
-
+  const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
     getUsers();
@@ -67,14 +67,11 @@ const Sidebar = () => {
             </button>
           ))}
 
-
           {users.length === 0 && (
             <div className="text-center text-zinc-500 py-4">
               No online users
             </div>
           )}
-
-
         </div>
       </div>
     </aside>
