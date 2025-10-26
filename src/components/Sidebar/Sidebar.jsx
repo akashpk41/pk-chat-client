@@ -154,7 +154,7 @@ const Sidebar = () => {
                     // Last seen badge - only if no unread messages
                     !isOnline && lastSeenText && (
                       <span
-                        className="absolute -top-1 -right-1 bg-zinc-700 text-white text-[10px]
+                        className="absolute -bottom-1 -right-1 bg-primary text-white text-[10px]
                         px-1.5 py-0.5 rounded-full font-medium"
                       >
                         {lastSeenText}
