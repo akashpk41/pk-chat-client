@@ -29,7 +29,23 @@ const MessageInput = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSendMessage = async (e) => {};
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!text.trim() && !imagePreview) return;
+
+    //     save the messages to the database;
+
+    try {
+      await sendMessage({ text: text.trim(), image: imagePreview });
+
+      // clear the from after save
+      setText("");
+      setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      console.log(`Failed To Send Messages`, err);
+    }
+  };
 
   return (
     <div className="p-4 w-full">
@@ -44,11 +60,11 @@ const MessageInput = () => {
             />
             <button
               onClick={handleRemoveImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
+              className="absolute  -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
                 flex items-center justify-center"
               type="button"
             >
-              <X className="size-3" />
+              <X className="size-3 cursor-pointer" />
             </button>
           </div>
         </div>
@@ -72,10 +88,8 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle
-                           ${
-                             imagePreview ? "text-emerald-500" : "text-zinc-400"
-                           }`}
+            className={` sm:flex btn btn-circle
+                ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
