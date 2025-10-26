@@ -14,7 +14,12 @@ const ChatContainer = () => {
 
   if (isMessageLoading) return <MessageSkeleton />;
 
-  return <div className="flex flex-col flex-1  overflow-auto"> <ChatHeader /> Messages...  <MessageInput /> </div>;
+  return (
+    <div className="flex flex-col flex-1  overflow-auto">
+      {" "}
+      <ChatHeader /> Messages... <MessageInput />{" "}
+    </div>
+  );
 };
 
 export default ChatContainer;
