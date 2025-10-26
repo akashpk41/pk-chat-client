@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useChatStore } from "../../store/useChatStore";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import MessageInput from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useAuthStore } from "../../store/useAuthStore";
-import { formatMessageTime } from "../../lib/formateTime";
+import { formatMessageTime, getRelativeTime } from "../../lib/formateTime";
 
 const ChatContainer = () => {
   const {
@@ -18,6 +18,7 @@ const ChatContainer = () => {
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
   const isFirstLoad = useRef(true);
+  const [showRelativeTime, setShowRelativeTime] = useState({});
 
   useEffect(() => {
     getMessages(selectedUser._id);
@@ -76,7 +77,15 @@ const ChatContainer = () => {
                 {formatMessageTime(message.createdAt)}
               </time>
             </div>
-            <div className="chat-bubble flex flex-col">
+            <div
+              className="chat-bubble flex flex-col cursor-pointer"
+              onClick={() =>
+                setShowRelativeTime((prev) => ({
+                  ...prev,
+                  [message._id]: !prev[message._id],
+                }))
+              }
+            >
               {message.image && (
                 <img
                   src={message.image}
@@ -85,6 +94,11 @@ const ChatContainer = () => {
                 />
               )}
               {message.text && <p>{message.text}</p>}
+              {showRelativeTime[message._id] && (
+                <span className="text-xs opacity-60 mt-1">
+                  {getRelativeTime(message.createdAt)}
+                </span>
+              )}
             </div>
           </div>
         ))}
