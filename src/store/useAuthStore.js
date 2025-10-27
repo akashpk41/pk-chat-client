@@ -99,6 +99,7 @@ export const useAuthStore = create((set, get) => ({
 
     get().setupGlobalMessageListener();
     get().setupTypingListener();
+    get().setupSeenListener();
   },
 
   disconnectSocket: () => {
@@ -157,6 +158,61 @@ export const useAuthStore = create((set, get) => ({
     });
   },
 
+  setupSeenListener: () => {
+    const socket = get().socket;
+    if (!socket) return;
+
+    import("./useChatStore").then(({ useChatStore }) => {
+      // Listen for message seen updates
+      socket.on("messageSeenUpdate", ({ userId, messageIds }) => {
+        console.log("📩 Message seen update received:", { userId, messageIds });
+
+        const currentMessages = useChatStore.getState().messages;
+        const updatedMessages = currentMessages.map((msg) => {
+          // Check if this message ID is in the seen list
+          if (messageIds && messageIds.includes(msg._id)) {
+            console.log("✅ Marking message as seen:", msg._id);
+            return { ...msg, seen: true, seenBy: userId };
+          }
+          return msg;
+        });
+
+        console.log("📝 Total messages updated:", updatedMessages.filter(m => m.seen).length);
+        useChatStore.setState({ messages: updatedMessages });
+      });
+
+      // Listen for chat opened by other user
+      socket.on("chatOpenedBy", ({ userId }) => {
+        console.log("👁️ Chat opened by:", userId);
+
+        const currentMessages = useChatStore.getState().messages;
+        const authUser = get().authUser;
+
+        if (!authUser) {
+          console.error("❌ No auth user found");
+          return;
+        }
+
+        // Mark all messages sent by current user to this userId as seen
+        const updatedMessages = currentMessages.map((msg) => {
+          // Check if message was sent by me to this user
+          const shouldMarkSeen =
+            msg.senderId === authUser._id &&
+            msg.receiverId === userId;
+
+          if (shouldMarkSeen) {
+            console.log("✅ Marking message as seen (chat opened):", msg._id);
+            return { ...msg, seen: true, seenBy: userId };
+          }
+          return msg;
+        });
+
+        console.log("📝 Messages marked as seen:", updatedMessages.filter(m => m.seen).length);
+        useChatStore.setState({ messages: updatedMessages });
+      });
+    });
+  },
+
   emitTyping: (receiverId) => {
     const socket = get().socket;
     const authUser = get().authUser;
@@ -170,6 +226,31 @@ export const useAuthStore = create((set, get) => ({
     const authUser = get().authUser;
     if (socket && authUser) {
       socket.emit("stopTyping", { senderId: authUser._id, receiverId });
+    }
+  },
+
+  emitMessageSeen: (senderId, messageIds) => {
+    const socket = get().socket;
+    const authUser = get().authUser;
+    if (socket && authUser && messageIds.length > 0) {
+      console.log("🔔 Emitting message seen:", { senderId, messageIds });
+      socket.emit("messageSeen", {
+        senderId,
+        receiverId: authUser._id,
+        messageIds
+      });
+    }
+  },
+
+  emitChatOpened: (otherUserId) => {
+    const socket = get().socket;
+    const authUser = get().authUser;
+    if (socket && authUser) {
+      console.log("👁️ Emitting chat opened to:", otherUserId);
+      socket.emit("chatOpened", {
+        userId: authUser._id,
+        otherUserId
+      });
     }
   },
 }));

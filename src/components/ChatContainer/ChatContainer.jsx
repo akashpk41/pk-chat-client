@@ -17,7 +17,7 @@ const ChatContainer = () => {
     unsubscribeFromMessages,
     typingUserId,
   } = useChatStore();
-  const { authUser } = useAuthStore();
+  const { authUser, emitMessageSeen, emitChatOpened } = useAuthStore();
   const messageEndRef = useRef(null);
   const isFirstLoad = useRef(true);
   const previousMessagesLength = useRef(0);
@@ -62,12 +62,16 @@ const ChatContainer = () => {
     isFirstLoad.current = true;
     previousMessagesLength.current = 0;
 
+    // Emit chat opened event
+    emitChatOpened(selectedUser._id);
+
     return () => unsubscribeFromMessages();
   }, [
     getMessages,
     selectedUser._id,
     subscribeToMessages,
     unsubscribeFromMessages,
+    emitChatOpened,
   ]);
 
   // Detect new messages and play sound
@@ -86,6 +90,33 @@ const ChatContainer = () => {
 
     previousMessagesLength.current = messages.length;
   }, [messages, authUser._id]);
+
+  // Mark messages as seen when chat is open
+  useEffect(() => {
+    if (messages.length > 0 && selectedUser && authUser) {
+      // Get all unread messages from the selected user
+      const unreadMessages = messages.filter(msg =>
+        msg.senderId === selectedUser._id &&
+        msg.receiverId === authUser._id &&
+        !msg.seen
+      );
+
+      const unreadMessageIds = unreadMessages.map(msg => msg._id);
+
+      // Debug: Check messages
+      console.log("📨 Total messages:", messages.length);
+      console.log("📬 Unread messages from", selectedUser.fullName, ":", unreadMessages.length);
+      console.log("🆔 Unread message IDs:", unreadMessageIds);
+
+      // Emit seen event if there are unread messages
+      if (unreadMessageIds.length > 0) {
+        console.log("🔔 Emitting message seen for:", unreadMessageIds);
+        setTimeout(() => {
+          emitMessageSeen(selectedUser._id, unreadMessageIds);
+        }, 500); // Small delay to ensure messages are visible
+      }
+    }
+  }, [messages, selectedUser, authUser, emitMessageSeen]);
 
   // auto scroll to the last message
   useEffect(() => {
@@ -111,6 +142,12 @@ const ChatContainer = () => {
     return "pending";
   };
 
+  // Check if message is seen
+  const isMessageSeen = (message) => {
+    // Check if message has seen property and it's true
+    return message.seen === true || message.seenBy;
+  };
+
   if (isMessagesLoading) return <MessageSkeleton />;
 
   // Check if the typing user is the selected user
@@ -123,6 +160,19 @@ const ChatContainer = () => {
         {messages.map((message) => {
           const messageStatus = getMessageStatus(message);
           const isSentByMe = message.senderId === authUser._id;
+          const messageSeen = isMessageSeen(message);
+
+          // Debug log for each message
+          if (isSentByMe) {
+            console.log("📧 Message:", {
+              id: message._id,
+              text: message.text?.substring(0, 20),
+              seen: message.seen,
+              seenBy: message.seenBy,
+              messageSeen: messageSeen,
+              status: messageStatus
+            });
+          }
 
           return (
             <div
@@ -188,10 +238,29 @@ const ChatContainer = () => {
                     {isSentByMe && (
                       <div className={`flex items-center justify-end gap-1 ${message.text ? 'mt-1' : 'absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5'}`}>
                         {messageStatus === "pending" ? (
+                          // Pending - Clock icon
                           <Clock className="w-3 h-3 opacity-60" />
+                        ) : messageSeen ? (
+                          // Seen - show receiver's profile pic
+                          <div className="size-4 rounded-full overflow-hidden border-2 border-green-400 flex-shrink-0">
+                            <img
+                              src={selectedUser.profilePic || "/avatar.png"}
+                              alt="seen"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                console.error("Image load error:", e);
+                                e.target.src = "/avatar.png";
+                              }}
+                            />
+                          </div>
                         ) : (
+                          // Sent but not seen - show double check
                           <CheckCheck className="w-3.5 h-3.5 opacity-70" />
                         )}
+                        {/* Debug indicator */}
+                        <span className="text-[8px] opacity-50 ml-1">
+                          {messageSeen ? "👁️" : "✓"}
+                        </span>
                       </div>
                     )}
 
