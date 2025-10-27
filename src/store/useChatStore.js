@@ -9,6 +9,8 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUserLoading: null,
   isMessageLoading: false,
+  typingUserId: null,
+  unreadMessages: {},
 
   getUsers: async () => {
     set({ isUserLoading: true });
@@ -36,14 +38,44 @@ export const useChatStore = create((set, get) => ({
 
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
+    const authUser = useAuthStore.getState().authUser;
+
+    // Create optimistic message
+    const optimisticMessage = {
+      _id: `temp-${Date.now()}`, // Temporary ID
+      tempId: `temp-${Date.now()}`,
+      senderId: authUser._id,
+      receiverId: selectedUser._id,
+      text: messageData.text,
+      image: messageData.image,
+      createdAt: new Date().toISOString(),
+      status: "pending", // Mark as pending
+    };
+
+    // Add message to UI immediately (optimistic update)
+    set({ messages: [...messages, optimisticMessage] });
+
     try {
       const { data } = await axiosInstance.post(
         `/messages/send/${selectedUser._id}`,
         messageData
       );
-      set({ messages: [...messages, data] });
+
+      // Replace optimistic message with real message from server
+      set({
+        messages: messages
+          .filter((msg) => msg.tempId !== optimisticMessage.tempId)
+          .concat(data),
+      });
     } catch (err) {
-      toast.error(err.response.data.message);
+      // Remove optimistic message on error
+      set({
+        messages: messages.filter(
+          (msg) => msg.tempId !== optimisticMessage.tempId
+        ),
+      });
+      toast.error(err.response?.data?.message || "Failed to send message");
+      throw err; // Re-throw to handle in component
     }
   },
 
@@ -69,6 +101,15 @@ export const useChatStore = create((set, get) => ({
     socket.off("newMessage");
   },
 
-  //   todo :
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setSelectedUser: (selectedUser) => {
+    set({ selectedUser });
+
+    // Clear unread messages for this user
+    const { unreadMessages } = get();
+    if (selectedUser && unreadMessages[selectedUser._id]) {
+      const newUnreadMessages = { ...unreadMessages };
+      delete newUnreadMessages[selectedUser._id];
+      set({ unreadMessages: newUnreadMessages });
+    }
+  },
 }));

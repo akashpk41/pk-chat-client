@@ -5,6 +5,7 @@ import MessageInput from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useAuthStore } from "../../store/useAuthStore";
 import { formatMessageTime, getRelativeTime } from "../../lib/formateTime";
+import { Check, CheckCheck, Clock } from "lucide-react";
 
 const ChatContainer = () => {
   const {
@@ -100,6 +101,16 @@ const ChatContainer = () => {
     }
   }, [messages, typingUserId]);
 
+  // Check message status (sent or pending)
+  const getMessageStatus = (message) => {
+    // If message has _id from database, it's sent successfully
+    if (message._id && message._id.length > 10) {
+      return "sent";
+    }
+    // If message is just created (temporary id or no id), it's pending
+    return "pending";
+  };
+
   if (isMessagesLoading) return <MessageSkeleton />;
 
   // Check if the typing user is the selected user
@@ -109,96 +120,112 @@ const ChatContainer = () => {
     <div className="flex flex-col flex-1 overflow-auto">
       <ChatHeader />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-         <div
-  key={message._id}
-  className={`flex ${
-    message.senderId === authUser._id ? "justify-end" : "justify-start"
-  }`}
->
-  <div className="flex items-end gap-2 max-w-[80%]">
-    {/* Avatar - left side for received messages */}
-    {message.senderId !== authUser._id && (
-      <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
-        <img
-          src={selectedUser.profilePic || "/avatar.png"}
-          alt="profile pic"
-          className="w-full h-full object-cover"
-        />
-      </div>
-    )}
+        {messages.map((message) => {
+          const messageStatus = getMessageStatus(message);
+          const isSentByMe = message.senderId === authUser._id;
 
-    <div className="flex flex-col">
+          return (
+            <div
+              key={message._id || message.tempId || Math.random()}
+              className={`flex ${
+                isSentByMe ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div className="flex items-end gap-2 max-w-[80%]">
+                {/* Avatar - left side for received messages */}
+                {!isSentByMe && (
+                  <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
+                    <img
+                      src={selectedUser.profilePic || "/avatar.png"}
+                      alt="profile pic"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
 
-      <p
-        className={`
-          text-[13px] mb-1 px-2
-          ${
-            message.senderId === authUser._id
-              ? "text-right text-base-content/50"
-              : "text-left text-base-content/50"
-          }
-        `}
-      >
-        {formatMessageTime(message.createdAt)}
-      </p>
+                <div className="flex flex-col">
+                  <p
+                    className={`
+                      text-[13px] mb-1 px-2
+                      ${
+                        isSentByMe
+                          ? "text-right text-base-content/50"
+                          : "text-left text-base-content/50"
+                      }
+                    `}
+                  >
+                    {formatMessageTime(message.createdAt)}
+                  </p>
 
-      {/* Message bubble */}
-      <div
-        className={`
-          rounded-xl p-3 shadow-sm cursor-pointer
-          ${
-            message.senderId === authUser._id
-              ? "bg-primary text-primary-content"
-              : "bg-base-200"
-          }
-        `}
-        onClick={() =>
-          setShowRelativeTime((prev) => ({
-            ...prev,
-            [message._id]: !prev[message._id],
-          }))
-        }
-      >
-        {message.image && (
-          <img
-            src={message.image}
-            alt="Attachment"
-            className="sm:max-w-[200px] rounded-md mb-2"
-          />
-        )}
-        {message.text && <p className="text-sm">{message.text}</p>}
+                  {/* Message bubble */}
+                  <div
+                    className={`
+                      rounded-xl shadow-sm cursor-pointer relative
+                      ${message.image && !message.text ? 'p-1' : 'p-3'}
+                      ${
+                        isSentByMe
+                          ? "bg-primary text-primary-content"
+                          : "bg-base-200"
+                      }
+                    `}
+                    onClick={() =>
+                      setShowRelativeTime((prev) => ({
+                        ...prev,
+                        [message._id]: !prev[message._id],
+                      }))
+                    }
+                  >
+                    {message.image && (
+                      <img
+                        src={message.image}
+                        alt="Attachment"
+                        className={`sm:max-w-[200px] rounded-md ${message.text ? 'mb-2' : 'rounded-lg'}`}
+                      />
+                    )}
+                    {message.text && <p className="text-sm">{message.text}</p>}
 
-        {showRelativeTime[message._id] && (
-          <span
-            className={`
-              text-xs block mt-2 pt-1 border-t
-              ${
-                message.senderId === authUser._id
-                  ? "text-primary-content/60 border-primary-content/20"
-                  : "text-base-content/60 border-base-content/20"
-              }
-            `}
-          >
-            {getRelativeTime(message.createdAt)}
-          </span>
-        )}
-      </div>
-    </div>
+                    {/* Message Status Indicator (only for sent messages) */}
+                    {isSentByMe && (
+                      <div className={`flex items-center justify-end gap-1 ${message.text ? 'mt-1' : 'absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5'}`}>
+                        {messageStatus === "pending" ? (
+                          <Clock className="w-3 h-3 opacity-60" />
+                        ) : (
+                          <CheckCheck className="w-3.5 h-3.5 opacity-70" />
+                        )}
+                      </div>
+                    )}
 
-    {/* Avatar - right side for sent messages */}
-    {message.senderId === authUser._id && (
-      <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
-        <img
-          src={authUser.profilePic || "/avatar.png"}
-          alt="profile pic"
-          className="w-full h-full object-cover"
-        />
-      </div>
-    )}
-  </div>
-</div>
-        ))}
+                    {showRelativeTime[message._id] && (
+                      <span
+                        className={`
+                          text-xs block mt-2 pt-1 border-t
+                          ${
+                            isSentByMe
+                              ? "text-primary-content/60 border-primary-content/20"
+                              : "text-base-content/60 border-base-content/20"
+                          }
+                        `}
+                      >
+                        {getRelativeTime(message.createdAt)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Avatar - right side for sent messages */}
+                {isSentByMe && (
+                  <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
+                    <img
+                      src={authUser.profilePic || "/avatar.png"}
+                      alt="profile pic"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
 
         {/* Typing Indicator */}
         {isSelectedUserTyping && (

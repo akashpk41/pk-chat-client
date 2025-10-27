@@ -7,7 +7,9 @@ import toast from "react-hot-toast";
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSending, setIsSending] = useState(false);
   const fileInputRef = useRef(null);
+  const textInputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const audioContextRef = useRef(null);
   const isTypingRef = useRef(false);
@@ -118,24 +120,48 @@ const MessageInput = () => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
 
+    // Prevent double sending
+    if (isSending) return;
+
     // Stop typing indicator
     if (isTypingRef.current) {
       emitStopTyping(selectedUser._id);
       isTypingRef.current = false;
     }
 
+    // Store message data before clearing
+    const messageData = {
+      text: text.trim(),
+      image: imagePreview
+    };
+
+    // Clear form IMMEDIATELY (optimistic UI)
+    setText("");
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+
+    // Set sending state
+    setIsSending(true);
+
     try {
-      await sendMessage({ text: text.trim(), image: imagePreview });
+      await sendMessage(messageData);
 
       // Play send sound after successful send
       playSendSound();
 
-      // Clear form
-      setText("");
-      setImagePreview(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      // Re-focus input after sending
+      setTimeout(() => {
+        textInputRef.current?.focus();
+      }, 0);
     } catch (err) {
       console.log(`Failed To Send Messages`, err);
+      toast.error("Failed to send message");
+
+      // Restore message on error (optional)
+      setText(messageData.text);
+      setImagePreview(messageData.image);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -179,10 +205,12 @@ const MessageInput = () => {
             className="w-full input input-bordered rounded-lg input-sm sm:input-md"
             placeholder="Type a message..."
             value={text}
+            ref={textInputRef}
             onChange={(e) => {
               setText(e.target.value);
               handleTyping();
             }}
+            disabled={isSending}
           />
           <input
             type="file"
@@ -197,6 +225,7 @@ const MessageInput = () => {
             className={`sm:flex btn btn-circle
                 ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
+            disabled={isSending}
           >
             <Image size={20} />
           </button>
@@ -204,9 +233,13 @@ const MessageInput = () => {
         <button
           type="submit"
           className="btn btn-sm btn-circle"
-          disabled={!text.trim() && !imagePreview}
+          disabled={(!text.trim() && !imagePreview) || isSending}
         >
-          <Send size={22} />
+          {isSending ? (
+            <span className="loading loading-spinner loading-xs"></span>
+          ) : (
+            <Send size={22} />
+          )}
         </button>
       </form>
     </div>
