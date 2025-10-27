@@ -8,7 +8,7 @@ const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
-  isLogging: false,
+  isLoggingIn: false,
   isUpdatingProfile: false,
   onlineUsers: [],
   isCheckingAuth: true,
@@ -42,7 +42,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   login: async (userData) => {
-    set({ isLogging: true });
+    set({ isLoggingIn: true });
     try {
       const { data } = await axiosInstance.post("/auth/login", userData);
       set({ authUser: data });
@@ -51,7 +51,7 @@ export const useAuthStore = create((set, get) => ({
     } catch (err) {
       toast.error(err.response.data.message);
     } finally {
-      set({ isLogging: false });
+      set({ isLoggingIn: false });
     }
   },
 

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+
 import { useAuthStore } from "../store/useAuthStore";
 import {
   Eye,
@@ -53,14 +55,47 @@ const SignUp = () => {
           {/* LOGO */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-              <div
-                className="size-12 rounded-xl bg-primary/10 flex items-center justify-center
-              group-hover:bg-primary/20 transition-colors"
+              <motion.div
+                className="size-20 rounded-xl bg-primary/10 flex items-center justify-center
+    group-hover:bg-primary/20 transition-colors relative overflow-hidden"
+                animate={{
+                  y: [0, -8, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <MessageSquare className="size-6 text-primary" />
-                {/* <h2> PK Chat </h2> */}
-              </div>
-              <h1 className="text-2xl font-bold mt-2">Create Account</h1>
+                {/* Subtle glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-primary/5 rounded-xl"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+
+                <motion.div
+                  animate={{
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5,
+                  }}
+                >
+                  <MessageSquare className="size-14 text-primary relative z-10" />
+                </motion.div>
+              </motion.div>
+              <h1 className="text-4xl font-bold mt-2">Create Account</h1>
               <p className="text-base-content/60">
                 Get started with your free account
               </p>
@@ -141,12 +176,12 @@ const SignUp = () => {
 
             <button
               type="submit"
-              className="btn btn-primary w-full"
+              className="btn text-xl  p-6  btn-primary w-full"
               disabled={isSigningUp}
             >
               {isSigningUp ? (
                 <>
-                  <Loader2 className="size-5 animate-spin" />
+                  <Loader2 className="size-7 animate-spin" />
                   Loading...
                 </>
               ) : (
@@ -156,10 +191,10 @@ const SignUp = () => {
           </form>
 
           <div className="text-center">
-            <p className="text-base-content/60">
-              Already have an account?{" "}
+            <p className="text-md  font-semibold">
+              Already Have an Account?{" "}
               <Link to="/login" className="link link-primary">
-                Sign in
+                Log In
               </Link>
             </p>
           </div>

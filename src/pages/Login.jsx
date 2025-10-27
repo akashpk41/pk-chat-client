@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+
 import { useAuthStore } from "../store/useAuthStore";
 import AuthImagePattern from "../components/common/AuthImagePattern";
 import { Link } from "react-router";
@@ -25,14 +27,48 @@ const Login = () => {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-              <div
-                className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20
-              transition-colors"
+               <motion.div
+                className="size-20 rounded-xl bg-primary/10 flex items-center justify-center
+    group-hover:bg-primary/20 transition-colors relative overflow-hidden"
+                animate={{
+                  y: [0, -8, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
-                <MessageSquare className="w-6 h-6 text-primary" />
-              </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
+                {/* Subtle glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-primary/5 rounded-xl"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+
+                <motion.div
+                  animate={{
+                    rotate: [0, 5, -5, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5,
+                  }}
+                >
+                  <MessageSquare className="size-14 text-primary relative z-10" />
+                </motion.div>
+              </motion.div>
+              <h1 className="text-4xl font-bold mt-2">Welcome Back</h1>
+              <p className="text-3xl-content/60">Log In to your account</p>
             </div>
           </div>
 
@@ -91,25 +127,25 @@ const Login = () => {
 
             <button
               type="submit"
-              className="btn btn-primary w-full"
+              className="btn text-xl  p-6 btn-primary w-full"
               disabled={isLoggingIn}
             >
               {isLoggingIn ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="h-7 w-7 animate-spin" />
                   Loading...
                 </>
               ) : (
-                "Sign in"
+                "Log In"
               )}
             </button>
           </form>
 
           <div className="text-center">
-            <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
+            <p className="text-md font-semibold">
+              Don&apos;t Have an Account?{" "}
               <Link to="/signup" className="link link-primary">
-                Create account
+                Create Account
               </Link>
             </p>
           </div>
@@ -120,7 +156,7 @@ const Login = () => {
       <AuthImagePattern
         title={"Welcome back!"}
         subtitle={
-          "Sign in to continue your conversations and catch up with your messages."
+          "Log In to continue your conversations and catch up with your messages."
         }
       />
     </div>

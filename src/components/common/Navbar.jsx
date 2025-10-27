@@ -18,7 +18,7 @@ const Navbar = () => {
               className="flex items-center gap-2.5 hover:opacity-80 transition-all"
             >
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-primary" />
+                <MessageSquare className="w-6 h-6 text-primary" />
               </div>
               <h1 className="text-lg font-bold">PK Chat</h1>
             </Link>
@@ -32,19 +32,19 @@ const Navbar = () => {
 
               `}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-6 h-6" />
               <span className="hidden sm:inline">Settings</span>
             </Link>
 
             {authUser && (
               <>
                 <Link to="/profile" className={`btn btn-sm gap-2`}>
-                  <User className="size-5" />
+                  <User className="size-6" />
                   <span className="hidden sm:inline">Profile</span>
                 </Link>
 
                 <button className="flex gap-2 items-center" onClick={logOut}>
-                  <LogOut className="size-5" />
+                  <LogOut className="size-6" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
               </>
