@@ -47,6 +47,28 @@ const MessageInput = () => {
     oscillator.stop(ctx.currentTime + 0.05);
   };
 
+  // Play message send sound
+  const playSendSound = () => {
+    if (!audioContextRef.current) return;
+
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Pleasant "whoosh" send sound
+    oscillator.frequency.setValueAtTime(600, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.1);
+
+    gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.15);
+  };
+
   const handleTyping = () => {
     if (!selectedUser) return;
 
@@ -104,6 +126,9 @@ const MessageInput = () => {
 
     try {
       await sendMessage({ text: text.trim(), image: imagePreview });
+
+      // Play send sound after successful send
+      playSendSound();
 
       // Clear form
       setText("");

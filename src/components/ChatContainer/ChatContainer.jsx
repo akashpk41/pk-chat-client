@@ -19,12 +19,47 @@ const ChatContainer = () => {
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
   const isFirstLoad = useRef(true);
+  const previousMessagesLength = useRef(0);
+  const audioContextRef = useRef(null);
   const [showRelativeTime, setShowRelativeTime] = useState({});
+
+  // Initialize Audio Context for receive sound
+  useEffect(() => {
+    audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    return () => {
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  // Play message receive sound
+  const playReceiveSound = () => {
+    if (!audioContextRef.current) return;
+
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Pleasant "ding" receive sound with two tones
+    oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+    oscillator.frequency.setValueAtTime(1000, ctx.currentTime + 0.05);
+
+    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.2);
+  };
 
   useEffect(() => {
     getMessages(selectedUser._id);
     subscribeToMessages();
     isFirstLoad.current = true;
+    previousMessagesLength.current = 0;
 
     return () => unsubscribeFromMessages();
   }, [
@@ -33,6 +68,23 @@ const ChatContainer = () => {
     subscribeToMessages,
     unsubscribeFromMessages,
   ]);
+
+  // Detect new messages and play sound
+  useEffect(() => {
+    if (messages.length > 0 && !isFirstLoad.current) {
+      // Check if new message is received (not sent by current user)
+      if (messages.length > previousMessagesLength.current) {
+        const lastMessage = messages[messages.length - 1];
+
+        // Play sound only if message is from another user
+        if (lastMessage.senderId !== authUser._id) {
+          playReceiveSound();
+        }
+      }
+    }
+
+    previousMessagesLength.current = messages.length;
+  }, [messages, authUser._id]);
 
   // auto scroll to the last message
   useEffect(() => {
