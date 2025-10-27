@@ -58,53 +58,94 @@ const ChatContainer = () => {
       <ChatHeader />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
-          <div
-            key={message._id}
-            className={`chat ${
-              message.senderId === authUser._id ? "chat-end" : "chat-start"
-            }`}
-          >
-            <div className="chat-image avatar">
-              <div className="size-10 rounded-full border">
-                <img
-                  src={
-                    message.senderId === authUser._id
-                      ? authUser.profilePic || "/avatar.png"
-                      : selectedUser.profilePic || "/avatar.png"
-                  }
-                  alt="profile pic"
-                />
-              </div>
-            </div>
-            <div className="chat-header mb-1">
-              <time className="text-xs opacity-50 ml-1">
-                {formatMessageTime(message.createdAt)}
-              </time>
-            </div>
-            <div
-              className="chat-bubble flex flex-col cursor-pointer"
-              onClick={() =>
-                setShowRelativeTime((prev) => ({
-                  ...prev,
-                  [message._id]: !prev[message._id],
-                }))
+         <div
+  key={message._id}
+  className={`flex ${
+    message.senderId === authUser._id ? "justify-end" : "justify-start"
+  }`}
+>
+  <div className="flex items-end gap-2 max-w-[80%]">
+    {/* Avatar - left side for received messages */}
+    {message.senderId !== authUser._id && (
+      <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
+        <img
+          src={selectedUser.profilePic || "/avatar.png"}
+          alt="profile pic"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    )}
+
+    <div className="flex flex-col">
+
+      <p
+        className={`
+          text-[13px] mb-1 px-2
+          ${
+            message.senderId === authUser._id
+              ? "text-right text-base-content/50"
+              : "text-left text-base-content/50"
+          }
+        `}
+      >
+        {formatMessageTime(message.createdAt)}
+      </p>
+
+      {/* Message bubble */}
+      <div
+        className={`
+          rounded-xl p-3 shadow-sm cursor-pointer
+          ${
+            message.senderId === authUser._id
+              ? "bg-primary text-primary-content"
+              : "bg-base-200"
+          }
+        `}
+        onClick={() =>
+          setShowRelativeTime((prev) => ({
+            ...prev,
+            [message._id]: !prev[message._id],
+          }))
+        }
+      >
+        {message.image && (
+          <img
+            src={message.image}
+            alt="Attachment"
+            className="sm:max-w-[200px] rounded-md mb-2"
+          />
+        )}
+        {message.text && <p className="text-sm">{message.text}</p>}
+
+        {showRelativeTime[message._id] && (
+          <span
+            className={`
+              text-xs block mt-2 pt-1 border-t
+              ${
+                message.senderId === authUser._id
+                  ? "text-primary-content/60 border-primary-content/20"
+                  : "text-base-content/60 border-base-content/20"
               }
-            >
-              {message.image && (
-                <img
-                  src={message.image}
-                  alt="Attachment"
-                  className="sm:max-w-[200px] rounded-md mb-2"
-                />
-              )}
-              {message.text && <p>{message.text}</p>}
-              {showRelativeTime[message._id] && (
-                <span className="text-xs opacity-60 mt-1">
-                  {getRelativeTime(message.createdAt)}
-                </span>
-              )}
-            </div>
-          </div>
+            `}
+          >
+            {getRelativeTime(message.createdAt)}
+          </span>
+        )}
+      </div>
+    </div>
+
+    {/* Avatar - right side for sent messages */}
+    {message.senderId === authUser._id && (
+      <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
+        <img
+          src={authUser.profilePic || "/avatar.png"}
+          alt="profile pic"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    )}
+  </div>
+</div>
         ))}
 
         {/* Typing Indicator */}

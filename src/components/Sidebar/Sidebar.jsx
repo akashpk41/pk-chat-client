@@ -63,7 +63,7 @@ const Sidebar = () => {
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       {/* Header */}
-      <div className="border-b border-base-300 w-full p-5">
+      <div className="border-b border-base-300 w-full p-0">
         {/* Mobile Layout */}
         <div className="lg:hidden flex flex-col items-center gap-3">
           <Users className="size-6" />
@@ -117,7 +117,7 @@ const Sidebar = () => {
               key={user._id}
               onClick={() => setSelectedUser(user)}
               className={`
-              w-full p-3 flex items-center gap-3
+              w-full py-3 flex items-center gap-3
               hover:bg-base-300 transition-colors
               ${
                 selectedUser?._id === user._id
@@ -179,7 +179,7 @@ const Sidebar = () => {
                   {isOnline ? (
                     <span className="text-green-500">Online</span>
                   ) : (
-                    <span className="text-zinc-400 text-xs">
+                    <span className="text-zinc-400 text-sm">
                       {lastSeenText}
                     </span>
                   )}

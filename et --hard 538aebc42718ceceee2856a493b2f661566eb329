@@ -1,0 +1,227 @@
+[33mcommit 387618667a900b75937cd449281d892fdaaad9c5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Mon Oct 27 12:30:23 2025 +0600
+
+    updated sidebar skeleton
+
+[33mcommit 0b83544d8efe6d3374fcda37b68e8a25240cd3e7[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Mon Oct 27 12:19:08 2025 +0600
+
+    loading ui updated
+
+[33mcommit 538aebc42718ceceee2856a493b2f661566eb329[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Mon Oct 27 11:14:21 2025 +0600
+
+    ui updated
+
+[33mcommit 7e6ffa2e662e164a3aaf09430f4f4ae7dc4443ef[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Mon Oct 27 10:50:20 2025 +0600
+
+    updating the ui
+
+[33mcommit b0c4b4e9e5b9dafe96bf5b773e74b2b082a27c1a[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 22:02:25 2025 +0600
+
+    typing indecator and sound effect added
+
+[33mcommit 2ba9881a9419d898d578aabf36f04845c4aeeede[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 21:04:30 2025 +0600
+
+    updated sidebar
+
+[33mcommit 33b0bc959b1603c51e7a052b6408443b712d1a90[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 20:57:11 2025 +0600
+
+    working on total message count in the users sidebar
+
+[33mcommit c0885ab97485d2b779d4c6a8f29d4639562aba0a[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 20:25:51 2025 +0600
+
+    now showing last active details in user sidebar
+
+[33mcommit 5292897c106e4836be03a306536005fac5e1abfa[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 19:51:38 2025 +0600
+
+    chat header updated showing last user seen
+
+[33mcommit be30206383178f5bb3ff6eb56451b55ddf63baf1[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 19:23:14 2025 +0600
+
+    time formating updated now looking so cool
+
+[33mcommit f2ec611da07a3cdd7c570b6fc7e30c5db62d41fc[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 18:36:59 2025 +0600
+
+    fix scroll behavior in chat container
+
+[33mcommit a481cd80b7c2f29becd98a63610f311e7f1add3a[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 17:42:52 2025 +0600
+
+    updated
+
+[33mcommit 5ec1aeb77984c4b951557afb8f454c8a00df2b64[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 14:48:59 2025 +0600
+
+    updated base url and fix other
+
+[33mcommit 268f1912482616a72397f320c0b93596f28c8116[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 14:18:29 2025 +0600
+
+    online user filter functionality added
+
+[33mcommit 8f7b993f44c3996c89e62395b5ab54013ef43786[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 13:40:44 2025 +0600
+
+    bug fixed UI was not updating after sending messages
+
+[33mcommit 4b393299b69e071b18c0b8d646eca20ac91a3129[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 13:08:01 2025 +0600
+
+    live message functionality implemented
+
+[33mcommit e805ea9ad832c198471f6ea9533527a0a3e9006b[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 12:39:08 2025 +0600
+
+    online user functionality implemented successfully
+
+[33mcommit 58c51eba42d6e1dc29be8aefb09180d312b3af21[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 12:20:22 2025 +0600
+
+    connected socket io to the server
+
+[33mcommit 1fa1300b6c32221a0eaa7399d8dceadbcc1402e7[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 11:14:01 2025 +0600
+
+    sending message functionality added
+
+[33mcommit bf5bbc87994157936b1fcc1ff638956f445a0023[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 10:31:55 2025 +0600
+
+    image upload functionality added in the message input
+
+[33mcommit 50424cf802c13faab4b3a9803032acfb8fe3d65f[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 09:58:46 2025 +0600
+
+    send messages functionality created in the chat store
+
+[33mcommit 1a3bf51f9ff45866f2e602c1f1dbdf64a90ed052[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 09:43:45 2025 +0600
+
+    chat header component added
+
+[33mcommit 0c240373cfd945c2999a7f81b136af273def7a1a[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sun Oct 26 09:31:38 2025 +0600
+
+    updated folder structer
+
+[33mcommit 12ff0144d2813c3f0cd8aee54dec7b72b808cda9[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 23:02:44 2025 +0600
+
+    side bar component updated
+
+[33mcommit 216823b226f84c27e0f288aad124d9f9e3457d9f[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 22:12:55 2025 +0600
+
+    working on sidebar and added loading skeletons
+
+[33mcommit bc5db4e95a4fe498c56d2f35d3c16183f69c7221[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 21:48:22 2025 +0600
+
+    working on home page
+
+[33mcommit cb1052771e5f69cc211359063d8e8fdfea001ad8[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 21:27:59 2025 +0600
+
+    chat store created for chats
+
+[33mcommit 7a9863551ca917552c660550334604094a874e77[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 21:08:40 2025 +0600
+
+    total 35 themes added
+
+[33mcommit a1b4c7d15033f81f1847446c008d54a8cd447269[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 20:16:55 2025 +0600
+
+    theme store created and implementing daisy ui themes
+
+[33mcommit 3f62bfc714222ea7a4b1f78ffc820dee0438dc70[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 18:33:57 2025 +0600
+
+    profile updated functionality implemented
+
+[33mcommit 36d51a3246107a6667caa89d84b58793737d081e[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 18:02:21 2025 +0600
+
+    updated bugs and other functionality
+
+[33mcommit ff95e28dde3af1bfcaedb83b6fd3318a3d1f5ecf[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 17:32:29 2025 +0600
+
+    navbar and logout functionality added
+
+[33mcommit f167c8a8773137599e0a4b4a4ad03c09ca6b7484[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 17:15:57 2025 +0600
+
+    sign up functionality added
+
+[33mcommit 5b21f0a002a0d881ce354242ccba20fc50379478[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 16:38:41 2025 +0600
+
+    signup page improved
+
+[33mcommit e9ab026aeee2298eecea25546df814d79ca0bd72[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 15:58:33 2025 +0600
+
+    zustand setup and auth store created for user releated
+
+[33mcommit e5cd14e0b69df58c40cad41486b1ff28294cf637[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 15:28:13 2025 +0600
+
+    axios and other pages setup
+
+[33mcommit e1b48756e421fd2db2e920893661afc3681200ce[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Sat Oct 25 15:20:49 2025 +0600
+
+    google font react router tailwind and other are setupd
+
+[33mcommit 58b47864773d9d5194835aa81122c68448667a7c[m
+Author: akashpk41 <akashpk84100@gmail.com>
+Date:   Fri Oct 24 20:00:30 2025 +0600
+
+    client project setup
