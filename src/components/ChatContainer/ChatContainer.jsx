@@ -11,7 +11,7 @@ const ChatContainer = () => {
   const {
     getMessages,
     messages,
-    isMessagesLoading,
+    isMessageLoading,
     selectedUser,
     subscribeToMessages,
     unsubscribeFromMessages,
@@ -31,6 +31,9 @@ const ChatContainer = () => {
   const alreadyMarkedSeenRef = useRef(new Set());
   const audioContextRef = useRef(null);
   const [showRelativeTime, setShowRelativeTime] = useState({});
+
+  console.log('Message Loading',isMessageLoading)
+
 
   // Initialize Audio Context for receive sound
   useEffect(() => {
@@ -239,7 +242,7 @@ const ChatContainer = () => {
     return message.seen === true || message.seenBy;
   };
 
-  if (isMessagesLoading) return <MessageSkeleton />;
+  if (isMessageLoading) return <MessageSkeleton />;
 
   // Check if the typing user is the selected user
   const isSelectedUserTyping = typingUserId === selectedUser?._id;

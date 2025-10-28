@@ -159,7 +159,7 @@ const Sidebar = () => {
                   />
                 </div>
 
-                {/* Online status indicator - Green dot */}
+                {/* Online status indicator - Green dot (both mobile & desktop) */}
                 {isOnline && (
                   <span
                     className="absolute bottom-0 right-0 size-3.5 bg-green-500
@@ -167,15 +167,31 @@ const Sidebar = () => {
                   />
                 )}
 
-                {/* Mobile version: Unread count badge - top right */}
-                {unreadCount > 0 && (
-                  <span
-                    className="lg:hidden absolute -top-1 -right-1 bg-primary text-white text-[10px]
-                    px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
-                  >
-                    {unreadCount > 99 ? "99+" : unreadCount}
-                  </span>
-                )}
+                {/* Mobile version badges */}
+                <div className="lg:hidden">
+                  {unreadCount > 0 ? (
+                    // Unread count badge - top right (priority over last seen)
+                    <span
+                      className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
+                      px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
+                    >
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  ) : (
+                    // Last seen badge - only if offline AND no unread messages
+                    !isOnline && lastSeenText && (
+                      <span
+                        className="absolute -bottom-1 -right-1 bg-zinc-600 text-white text-[9px]
+                        px-1.5 py-0.5 rounded-full font-medium"
+                      >
+                        {lastSeenText.replace(' ago', '')}
+                      </span>
+                    )
+                  )}
+                </div>
+
+                {/* Desktop: Unread count on avatar (optional, already shown next to name) */}
+                {/* Keeping desktop clean - badge only in text area */}
               </div>
 
               {/* User info - only visible on larger screens */}

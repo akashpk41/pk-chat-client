@@ -56,7 +56,7 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  logOutUser: async () => {
+  logOut: async () => {
     try {
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
@@ -125,14 +125,22 @@ export const useAuthStore = create((set, get) => ({
         const isMessageFromSelectedUser = selectedUser && selectedUser._id === newMessage.senderId;
 
         if (isMessageFromSelectedUser) {
-          // Add to current chat
+          // Add to current chat messages
           const currentMessages = chatState.messages || [];
           useChatStore.setState({
             messages: [...currentMessages, newMessage],
           });
         } else {
-          // Add to unread count
-          useChatStore.getState().addUnreadMessage(newMessage.senderId);
+          // Add to unread count - ALWAYS update even if not first load
+          const currentUnread = chatState.unreadMessages || {};
+          const currentCount = currentUnread[newMessage.senderId] || 0;
+
+          useChatStore.setState({
+            unreadMessages: {
+              ...currentUnread,
+              [newMessage.senderId]: currentCount + 1,
+            },
+          });
         }
       });
     });
@@ -165,19 +173,14 @@ export const useAuthStore = create((set, get) => ({
     import("./useChatStore").then(({ useChatStore }) => {
       // Listen for message seen updates
       socket.on("messageSeenUpdate", ({ userId, messageIds }) => {
-        console.log("📩 Message seen update received:", { userId, messageIds });
-
         const currentMessages = useChatStore.getState().messages;
         const updatedMessages = currentMessages.map((msg) => {
           // Check if this message ID is in the seen list
           if (messageIds && messageIds.includes(msg._id)) {
-            console.log("✅ Marking message as seen:", msg._id);
             return { ...msg, seen: true, seenBy: userId };
           }
           return msg;
         });
-
-        console.log("📝 Total messages updated:", updatedMessages.filter(m => m.seen).length);
 
         // Update state immediately - this will trigger re-render
         useChatStore.setState({ messages: updatedMessages });
@@ -191,13 +194,10 @@ export const useAuthStore = create((set, get) => ({
 
       // Listen for chat opened by other user
       socket.on("chatOpenedBy", ({ userId }) => {
-        console.log("👁️ Chat opened by:", userId);
-
         const currentMessages = useChatStore.getState().messages;
         const authUser = get().authUser;
 
         if (!authUser) {
-          console.error("❌ No auth user found");
           return;
         }
 
@@ -209,13 +209,10 @@ export const useAuthStore = create((set, get) => ({
             msg.receiverId === userId;
 
           if (shouldMarkSeen) {
-            console.log("✅ Marking message as seen (chat opened):", msg._id);
             return { ...msg, seen: true, seenBy: userId };
           }
           return msg;
         });
-
-        console.log("📝 Messages marked as seen:", updatedMessages.filter(m => m.seen).length);
 
         // Update state immediately
         useChatStore.setState({ messages: updatedMessages });
