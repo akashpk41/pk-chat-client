@@ -16,11 +16,18 @@ const ChatContainer = () => {
     subscribeToMessages,
     unsubscribeFromMessages,
     typingUserId,
+    lastSeenUpdate,
+    lastSeenUserId,
   } = useChatStore();
   const { authUser, emitMessageSeen, emitChatOpened } = useAuthStore();
   const messageEndRef = useRef(null);
   const isFirstLoad = useRef(true);
   const previousMessagesLength = useRef(0);
+  const previousSeenCount = useRef(0);
+  const previousTypingUserId = useRef(null);
+  const lastPlayedSeenTimestamp = useRef(0);
+  const seenEmitTimeoutRef = useRef(null);
+  const alreadyMarkedSeenRef = useRef(new Set());
   const audioContextRef = useRef(null);
   const [showRelativeTime, setShowRelativeTime] = useState({});
 
@@ -54,6 +61,50 @@ const ChatContainer = () => {
 
     oscillator.start(ctx.currentTime);
     oscillator.stop(ctx.currentTime + 0.2);
+  };
+
+  // Play message seen sound (different from receive)
+  const playSeenSound = () => {
+    if (!audioContextRef.current) return;
+
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Soft "plop" sound for seen
+    oscillator.frequency.setValueAtTime(600, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.08);
+
+    gainNode.gain.setValueAtTime(0.12, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.08);
+  };
+
+  // Play typing sound (soft click)
+  const playTypingSound = () => {
+    if (!audioContextRef.current) return;
+
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Quick "tick" sound for typing
+    oscillator.frequency.setValueAtTime(1200, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.03);
+
+    gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.03);
   };
 
   useEffect(() => {
@@ -91,32 +142,72 @@ const ChatContainer = () => {
     previousMessagesLength.current = messages.length;
   }, [messages, authUser._id]);
 
-  // Mark messages as seen when chat is open
+  // Detect when messages are seen and play sound (using lastSeenUpdate trigger)
+  useEffect(() => {
+    if (lastSeenUpdate && !isFirstLoad.current) {
+      // Only play if this is a new update (prevent duplicate sounds)
+      if (lastSeenUpdate !== lastPlayedSeenTimestamp.current) {
+        playSeenSound();
+        lastPlayedSeenTimestamp.current = lastSeenUpdate;
+      }
+    }
+  }, [lastSeenUpdate]);
+
+  // Detect when someone starts typing and play sound
+  useEffect(() => {
+    // Check if typing user changed from null to someone (started typing)
+    const isTypingStarted = !previousTypingUserId.current && typingUserId;
+
+    if (isTypingStarted && typingUserId === selectedUser?._id) {
+      console.log("⌨️ Typing detected! Playing sound...");
+      playTypingSound();
+    }
+
+    previousTypingUserId.current = typingUserId;
+  }, [typingUserId, selectedUser]);
+
+  // Mark messages as seen when chat is open (with throttling)
   useEffect(() => {
     if (messages.length > 0 && selectedUser && authUser) {
       // Get all unread messages from the selected user
       const unreadMessages = messages.filter(msg =>
         msg.senderId === selectedUser._id &&
         msg.receiverId === authUser._id &&
-        !msg.seen
+        !msg.seen &&
+        !alreadyMarkedSeenRef.current.has(msg._id) // Check if not already marked
       );
 
       const unreadMessageIds = unreadMessages.map(msg => msg._id);
 
-      // Debug: Check messages
-      console.log("📨 Total messages:", messages.length);
-      console.log("📬 Unread messages from", selectedUser.fullName, ":", unreadMessages.length);
-      console.log("🆔 Unread message IDs:", unreadMessageIds);
-
       // Emit seen event if there are unread messages
       if (unreadMessageIds.length > 0) {
-        console.log("🔔 Emitting message seen for:", unreadMessageIds);
-        setTimeout(() => {
+        // Clear any pending timeout
+        if (seenEmitTimeoutRef.current) {
+          clearTimeout(seenEmitTimeoutRef.current);
+        }
+
+        // Mark as already processed
+        unreadMessageIds.forEach(id => alreadyMarkedSeenRef.current.add(id));
+
+        // Throttle emit to once every 500ms
+        seenEmitTimeoutRef.current = setTimeout(() => {
           emitMessageSeen(selectedUser._id, unreadMessageIds);
-        }, 500); // Small delay to ensure messages are visible
+        }, 500);
       }
     }
+
+    // Cleanup
+    return () => {
+      if (seenEmitTimeoutRef.current) {
+        clearTimeout(seenEmitTimeoutRef.current);
+      }
+    };
   }, [messages, selectedUser, authUser, emitMessageSeen]);
+
+  // Reset seen tracking when changing chat
+  useEffect(() => {
+    alreadyMarkedSeenRef.current.clear();
+  }, [selectedUser?._id]);
 
   // auto scroll to the last message
   useEffect(() => {
@@ -161,18 +252,6 @@ const ChatContainer = () => {
           const messageStatus = getMessageStatus(message);
           const isSentByMe = message.senderId === authUser._id;
           const messageSeen = isMessageSeen(message);
-
-          // Debug log for each message
-          if (isSentByMe) {
-            console.log("📧 Message:", {
-              id: message._id,
-              text: message.text?.substring(0, 20),
-              seen: message.seen,
-              seenBy: message.seenBy,
-              messageSeen: messageSeen,
-              status: messageStatus
-            });
-          }
 
           return (
             <div
@@ -242,25 +321,17 @@ const ChatContainer = () => {
                           <Clock className="w-3 h-3 opacity-60" />
                         ) : messageSeen ? (
                           // Seen - show receiver's profile pic
-                          <div className="size-4 rounded-full overflow-hidden border-2 border-green-400 flex-shrink-0">
+                          <div className="size-4 rounded-full overflow-hidden border-2 border-white/50 flex-shrink-0">
                             <img
                               src={selectedUser.profilePic || "/avatar.png"}
                               alt="seen"
                               className="w-full h-full object-cover"
-                              onError={(e) => {
-                                console.error("Image load error:", e);
-                                e.target.src = "/avatar.png";
-                              }}
                             />
                           </div>
                         ) : (
                           // Sent but not seen - show double check
                           <CheckCheck className="w-3.5 h-3.5 opacity-70" />
                         )}
-                        {/* Debug indicator */}
-                        <span className="text-[8px] opacity-50 ml-1">
-                          {messageSeen ? "👁️" : "✓"}
-                        </span>
                       </div>
                     )}
 

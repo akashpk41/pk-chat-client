@@ -146,10 +146,12 @@ export const useAuthStore = create((set, get) => ({
 
     import("./useChatStore").then(({ useChatStore }) => {
       socket.on("userTyping", ({ userId }) => {
+        console.log("⌨️ User typing event received:", userId);
         useChatStore.setState({ typingUserId: userId });
       });
 
       socket.on("userStopTyping", ({ userId }) => {
+        console.log("⏸️ User stop typing event received:", userId);
         const currentTypingUserId = useChatStore.getState().typingUserId;
         if (currentTypingUserId === userId) {
           useChatStore.setState({ typingUserId: null });
@@ -178,7 +180,15 @@ export const useAuthStore = create((set, get) => ({
         });
 
         console.log("📝 Total messages updated:", updatedMessages.filter(m => m.seen).length);
+
+        // Update state immediately - this will trigger re-render
         useChatStore.setState({ messages: updatedMessages });
+
+        // Also trigger a force update flag
+        useChatStore.setState({
+          lastSeenUpdate: Date.now(),
+          lastSeenUserId: userId
+        });
       });
 
       // Listen for chat opened by other user
@@ -208,7 +218,15 @@ export const useAuthStore = create((set, get) => ({
         });
 
         console.log("📝 Messages marked as seen:", updatedMessages.filter(m => m.seen).length);
+
+        // Update state immediately
         useChatStore.setState({ messages: updatedMessages });
+
+        // Trigger force update
+        useChatStore.setState({
+          lastSeenUpdate: Date.now(),
+          lastSeenUserId: userId
+        });
       });
     });
   },
