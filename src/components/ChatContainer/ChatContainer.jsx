@@ -32,12 +32,12 @@ const ChatContainer = () => {
   const audioContextRef = useRef(null);
   const [showRelativeTime, setShowRelativeTime] = useState({});
 
-  console.log('Message Loading',isMessageLoading)
-
+  console.log("Message Loading", isMessageLoading);
 
   // Initialize Audio Context for receive sound
   useEffect(() => {
-    audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+    audioContextRef.current = new (window.AudioContext ||
+      window.webkitAudioContext)();
     return () => {
       if (audioContextRef.current) {
         audioContextRef.current.close();
@@ -80,7 +80,10 @@ const ChatContainer = () => {
 
     // Soft "plop" sound for seen
     oscillator.frequency.setValueAtTime(600, ctx.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.08);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      400,
+      ctx.currentTime + 0.08
+    );
 
     gainNode.gain.setValueAtTime(0.12, ctx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
@@ -102,7 +105,10 @@ const ChatContainer = () => {
 
     // Quick "tick" sound for typing
     oscillator.frequency.setValueAtTime(1200, ctx.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.03);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      800,
+      ctx.currentTime + 0.03
+    );
 
     gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
@@ -173,14 +179,15 @@ const ChatContainer = () => {
   useEffect(() => {
     if (messages.length > 0 && selectedUser && authUser) {
       // Get all unread messages from the selected user
-      const unreadMessages = messages.filter(msg =>
-        msg.senderId === selectedUser._id &&
-        msg.receiverId === authUser._id &&
-        !msg.seen &&
-        !alreadyMarkedSeenRef.current.has(msg._id) // Check if not already marked
+      const unreadMessages = messages.filter(
+        (msg) =>
+          msg.senderId === selectedUser._id &&
+          msg.receiverId === authUser._id &&
+          !msg.seen &&
+          !alreadyMarkedSeenRef.current.has(msg._id) // Check if not already marked
       );
 
-      const unreadMessageIds = unreadMessages.map(msg => msg._id);
+      const unreadMessageIds = unreadMessages.map((msg) => msg._id);
 
       // Emit seen event if there are unread messages
       if (unreadMessageIds.length > 0) {
@@ -190,7 +197,7 @@ const ChatContainer = () => {
         }
 
         // Mark as already processed
-        unreadMessageIds.forEach(id => alreadyMarkedSeenRef.current.add(id));
+        unreadMessageIds.forEach((id) => alreadyMarkedSeenRef.current.add(id));
 
         // Throttle emit to once every 500ms
         seenEmitTimeoutRef.current = setTimeout(() => {
@@ -259,9 +266,7 @@ const ChatContainer = () => {
           return (
             <div
               key={message._id || message.tempId || Math.random()}
-              className={`flex ${
-                isSentByMe ? "justify-end" : "justify-start"
-              }`}
+              className={`flex ${isSentByMe ? "justify-end" : "justify-start"}`}
             >
               <div className="flex items-end gap-2 max-w-[80%]">
                 {/* Avatar - left side for received messages */}
@@ -293,7 +298,7 @@ const ChatContainer = () => {
                   <div
                     className={`
                       rounded-xl shadow-sm cursor-pointer relative
-                      ${message.image && !message.text ? 'p-1' : 'p-3'}
+                      ${message.image && !message.text ? "p-1" : "p-3"}
                       ${
                         isSentByMe
                           ? "bg-primary text-primary-content"
@@ -311,14 +316,22 @@ const ChatContainer = () => {
                       <img
                         src={message.image}
                         alt="Attachment"
-                        className={`sm:max-w-[200px] rounded-md ${message.text ? 'mb-2' : 'rounded-lg'}`}
+                        className={`sm:max-w-[200px] rounded-md ${
+                          message.text ? "mb-2" : "rounded-lg"
+                        }`}
                       />
                     )}
                     {message.text && <p className="text-sm">{message.text}</p>}
 
                     {/* Message Status Indicator (only for sent messages) */}
                     {isSentByMe && (
-                      <div className={`flex items-center justify-end gap-1 ${message.text ? 'mt-1' : 'absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5'}`}>
+                      <div
+                        className={`flex items-center justify-end gap-1 ${
+                          message.text
+                            ? "mt-1"
+                            : "absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5"
+                        }`}
+                      >
                         {messageStatus === "pending" ? (
                           // Pending - Clock icon
                           <Clock className="w-3 h-3 opacity-60" />

@@ -5,8 +5,14 @@ import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = () => {
-  const { getUsers, users, selectedUser, isUserLoading, setSelectedUser, unreadMessages } =
-    useChatStore();
+  const {
+    getUsers,
+    users,
+    selectedUser,
+    isUserLoading,
+    setSelectedUser,
+    unreadMessages,
+  } = useChatStore();
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [lastSeenTexts, setLastSeenTexts] = useState({});
@@ -62,7 +68,10 @@ const Sidebar = () => {
     : users;
 
   // Calculate total unread count
-  const totalUnread = Object.values(unreadMessages || {}).reduce((sum, count) => sum + count, 0);
+  const totalUnread = Object.values(unreadMessages || {}).reduce(
+    (sum, count) => sum + count,
+    0
+  );
 
   if (isUserLoading) return <SidebarSkeleton />;
 
@@ -80,7 +89,9 @@ const Sidebar = () => {
               </span>
             )}
           </div>
-          <span className="text-xs text-zinc-500">({onlineUsers.length - 1})</span>
+          <span className="text-xs text-zinc-500">
+            ({onlineUsers.length - 1})
+          </span>
 
           {/* Filter Toggle for Mobile */}
           <label className="cursor-pointer flex flex-col items-center gap-1">
@@ -148,10 +159,12 @@ const Sidebar = () => {
             >
               <div className="relative mx-auto lg:mx-0">
                 {/* Avatar with special ring for unread messages */}
-                <div className={`
+                <div
+                  className={`
                   size-12 rounded-full overflow-hidden
                   ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
-                `}>
+                `}
+                >
                   <img
                     src={user.profilePic || "/avatar.png"}
                     alt={user.fullName}
@@ -179,12 +192,13 @@ const Sidebar = () => {
                     </span>
                   ) : (
                     // Last seen badge - only if offline AND no unread messages
-                    !isOnline && lastSeenText && (
+                    !isOnline &&
+                    lastSeenText && (
                       <span
                         className="absolute -bottom-1 -right-1 bg-zinc-600 text-white text-[9px]
                         px-1.5 py-0.5 rounded-full font-medium"
                       >
-                        {lastSeenText.replace(' ago', '')}
+                        {lastSeenText.replace(" ago", "")}
                       </span>
                     )
                   )}
@@ -197,7 +211,11 @@ const Sidebar = () => {
               {/* User info - only visible on larger screens */}
               <div className="hidden lg:block text-left min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2 mb-1">
-                  <div className={`truncate ${unreadCount > 0 ? "font-bold" : "font-medium"}`}>
+                  <div
+                    className={`truncate ${
+                      unreadCount > 0 ? "font-bold" : "font-medium"
+                    }`}
+                  >
                     {user.fullName}
                   </div>
                   {/* Desktop: Unread count badge */}
@@ -209,10 +227,12 @@ const Sidebar = () => {
                 </div>
                 <div className="text-sm">
                   {isOnline ? (
-                    <span className="text-green-500 font-medium">● Active now</span>
+                    <span className="text-green-500 font-medium">
+                      ● Active now
+                    </span>
                   ) : (
                     <span className="text-zinc-400">
-                      {lastSeenText || "Offline"}
+                      Active {lastSeenText || "Offline"}
                     </span>
                   )}
                 </div>
