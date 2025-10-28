@@ -1,15 +1,8 @@
 import { useState } from "react";
 import { Send, Palette, Eye, Check } from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
-
-const THEMES = [
-  "light", "dark", "cupcake", "bumblebee", "emerald", "corporate",
-  "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden",
-  "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe",
-  "black", "luxury", "dracula", "cmyk", "autumn", "business",
-  "acid", "lemonade", "night", "coffee", "winter", "dim",
-  "nord", "sunset"
-];
+import { THEMES } from "../themes";
+import DeveloperProfile from "../components/DeveloperProfile";
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -26,9 +19,9 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-100 to-base-200">
-      <div className="container mx-auto px-4 pt-20 pb-12 max-w-6xl">
+      <div className="container mx-auto px-1 pt-2 pb-12 max-w-6xl">
         {/* Header Section */}
-        <div className="mb-8">
+        <div className="mb-8 px-4">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
               <Palette className="w-5 h-5 text-primary" />
@@ -43,7 +36,7 @@ const Settings = () => {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Theme Selection Panel */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="card bg-base-100 shadow-xl border border-base-300">
+            <div className="card bg-base-100 shadow-xl border border-primary">
               <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
                   <div>
@@ -67,9 +60,10 @@ const Settings = () => {
                       key={t}
                       className={`
                         group relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200
-                        ${theme === t
-                          ? "bg-primary/10 ring-2 ring-primary shadow-lg scale-105"
-                          : "bg-base-200 hover:bg-base-300 hover:scale-105"
+                        ${
+                          theme === t
+                            ? "bg-primary/10 ring-2 ring-primary shadow-lg scale-105"
+                            : "bg-base-200 hover:bg-base-300 hover:scale-105"
                         }
                       `}
                       onClick={() => setTheme(t)}
@@ -99,10 +93,12 @@ const Settings = () => {
                       </div>
 
                       {/* Theme Name */}
-                      <span className={`
+                      <span
+                        className={`
                         text-xs font-medium truncate w-full text-center transition-colors
                         ${theme === t ? "text-primary" : "text-base-content"}
-                      `}>
+                      `}
+                      >
                         {t.charAt(0).toUpperCase() + t.slice(1)}
                       </span>
 
@@ -124,8 +120,8 @@ const Settings = () => {
             <div className="card bg-base-100 shadow-xl border border-base-300 sticky top-24">
               <div className="card-body p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <Eye className="w-4 h-4 text-primary" />
-                  <h3 className="font-semibold">Live Preview</h3>
+                  <Eye className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold text-sm ">Live Preview</h3>
                 </div>
 
                 {/* Mock Chat UI */}
@@ -133,18 +129,20 @@ const Settings = () => {
                   {/* Chat Header */}
                   <div className="px-3 py-2.5 bg-base-100 border-b border-base-300">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-bold text-xs">
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-content font-bold text-sm">
                         PK
                       </div>
                       <div>
-                        <h4 className="font-medium text-xs">Akash PK</h4>
-                        <p className="text-[10px] text-base-content/60">Online</p>
+                        <h4 className="font-medium text-lg">Akash PK</h4>
+                        <p className="text-[13px] text-base-content/60">
+                          Online
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Chat Messages */}
-                  <div className="p-3 space-y-2 h-40 overflow-y-auto bg-base-100">
+                  <div className="p-3 mb-4 space-y-2 h-40 overflow-y-auto bg-base-100">
                     {PREVIEW_MESSAGES.map((message) => (
                       <div
                         key={message.id}
@@ -154,7 +152,7 @@ const Settings = () => {
                       >
                         <div
                           className={`
-                            max-w-[85%] rounded-lg p-2 shadow-sm text-xs
+                            max-w-[85%] rounded-lg p-2 shadow-sm text-md
                             ${
                               message.isSent
                                 ? "bg-primary text-primary-content"
@@ -165,7 +163,7 @@ const Settings = () => {
                           <p>{message.content}</p>
                           <p
                             className={`
-                              text-[9px] mt-1
+                              text-[12px] mt-1
                               ${
                                 message.isSent
                                   ? "text-primary-content/70"
@@ -181,17 +179,17 @@ const Settings = () => {
                   </div>
 
                   {/* Chat Input */}
-                  <div className="p-2 border-t border-base-300 bg-base-100">
+                  <div className="p-2  border-t border-base-300 bg-base-100">
                     <div className="flex gap-1.5">
                       <input
                         type="text"
-                        className="input input-bordered input-sm flex-1 text-xs"
+                        className="input input-bordered input-sm flex-1 text-sm"
                         placeholder="Type a message..."
                         value="This is a preview"
                         readOnly
                       />
                       <button className="btn btn-primary btn-sm min-h-0 h-8 w-8 p-0">
-                        <Send size={14} />
+                        <Send size={20} />
                       </button>
                     </div>
                   </div>
@@ -199,8 +197,10 @@ const Settings = () => {
 
                 {/* Current Theme Info */}
                 <div className="mt-3 p-2 bg-primary/10 rounded-lg">
-                  <p className="text-xs text-center">
-                    <span className="font-semibold text-primary">Current: </span>
+                  <p className="text-base text-center">
+                    <span className="font-semibold text-primary">
+                      Current:{" "}
+                    </span>
                     <span className="capitalize">{theme}</span>
                   </p>
                 </div>
@@ -209,14 +209,9 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Additional Info */}
-        <div className="mt-6 card bg-base-100 shadow-xl border border-base-300">
-          <div className="card-body">
-            <h3 className="font-semibold mb-2">About Themes</h3>
-            <p className="text-sm text-base-content/70">
-              Themes change the color scheme of your entire chat interface. Your preference is automatically saved and will persist across sessions. Hover over any theme to see its name, and click to apply it instantly.
-            </p>
-          </div>
+        {/* Developer Profile - Full Width Below Preview */}
+        <div className="mt-6">
+          <DeveloperProfile />
         </div>
       </div>
     </div>
