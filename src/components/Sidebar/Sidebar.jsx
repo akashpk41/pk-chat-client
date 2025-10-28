@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
@@ -11,8 +10,6 @@ const Sidebar = () => {
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [lastSeenTexts, setLastSeenTexts] = useState({});
-
-  console.log("Unread Messages:", unreadMessages);
 
   useEffect(() => {
     getUsers();
@@ -33,15 +30,21 @@ const Sidebar = () => {
             const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
             const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-            if (diffInMinutes < 60) {
-              newTexts[user._id] = `${diffInMinutes || 1}m`;
+            if (diffInMinutes < 1) {
+              newTexts[user._id] = "Just now";
+            } else if (diffInMinutes < 60) {
+              newTexts[user._id] = `${diffInMinutes}m ago`;
             } else if (diffInHours < 24) {
-              newTexts[user._id] = `${diffInHours}h`;
+              newTexts[user._id] = `${diffInHours}h ago`;
+            } else if (diffInDays === 1) {
+              newTexts[user._id] = "Yesterday";
+            } else if (diffInDays < 7) {
+              newTexts[user._id] = `${diffInDays}d ago`;
             } else {
-              newTexts[user._id] = `${diffInDays}d`;
+              newTexts[user._id] = "Long time ago";
             }
           } else {
-            newTexts[user._id] = "offline";
+            newTexts[user._id] = "Offline";
           }
         }
       });
@@ -58,15 +61,25 @@ const Sidebar = () => {
     ? users.filter((user) => onlineUsers.includes(user._id))
     : users;
 
+  // Calculate total unread count
+  const totalUnread = Object.values(unreadMessages || {}).reduce((sum, count) => sum + count, 0);
+
   if (isUserLoading) return <SidebarSkeleton />;
 
   return (
     <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       {/* Header */}
-      <div className="border-b border-base-300 w-full p-0">
+      <div className="border-b border-base-300 w-full p-5">
         {/* Mobile Layout */}
-        <div className="lg:hidden flex flex-col items-center gap-3">
-          <Users className="size-6" />
+        <div className="lg:hidden flex flex-col items-center gap-2">
+          <div className="relative">
+            <Users className="size-6" />
+            {totalUnread > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold min-w-[18px] text-center">
+                {totalUnread > 99 ? "99+" : totalUnread}
+              </span>
+            )}
+          </div>
           <span className="text-xs text-zinc-500">({onlineUsers.length - 1})</span>
 
           {/* Filter Toggle for Mobile */}
@@ -83,9 +96,19 @@ const Sidebar = () => {
 
         {/* Desktop Layout */}
         <div className="hidden lg:block">
-          <div className="flex items-center gap-2">
-            <Users className="size-6" />
-            <span className="font-medium">Contacts</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Users className="size-6" />
+              <span className="font-medium">Contacts</span>
+            </div>
+            {/* Total unread badge */}
+            {totalUnread > 0 && (
+              <div className="min-w-[24px] h-6 px-2 bg-primary text-white rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">
+                  {totalUnread > 99 ? "99+" : totalUnread}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Online filter toggle */}
@@ -111,76 +134,69 @@ const Sidebar = () => {
           const isOnline = onlineUsers.includes(user._id);
           const lastSeenText = lastSeenTexts[user._id];
           const unreadCount = unreadMessages?.[user._id] || 0;
+          const isSelected = selectedUser?._id === user._id;
 
           return (
             <button
               key={user._id}
               onClick={() => setSelectedUser(user)}
               className={`
-              w-full py-3 flex items-center gap-3
-              hover:bg-base-300 transition-colors
-              ${
-                selectedUser?._id === user._id
-                  ? "bg-base-300 ring-1 ring-base-300"
-                  : ""
-              }
-            `}
+                w-full py-3 flex items-center gap-3
+                hover:bg-base-300 transition-colors
+                ${isSelected ? "bg-base-300 ring-1 ring-primary/20" : ""}
+              `}
             >
               <div className="relative mx-auto lg:mx-0">
-                <img
-                  src={user.profilePic || "/avatar.png"}
-                  alt={user.name}
-                  className="size-12 object-cover rounded-full"
-                />
-                {/* Green circle for online users */}
+                {/* Avatar with special ring for unread messages */}
+                <div className={`
+                  size-12 rounded-full overflow-hidden
+                  ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
+                `}>
+                  <img
+                    src={user.profilePic || "/avatar.png"}
+                    alt={user.fullName}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Online status indicator - Green dot */}
                 {isOnline && (
                   <span
-                    className="absolute bottom-0 right-0 size-3 bg-green-500
-                  rounded-full ring-2 ring-zinc-900"
+                    className="absolute bottom-0 right-0 size-3.5 bg-green-500
+                    rounded-full ring-2 ring-zinc-900"
                   />
                 )}
 
-                {/* Mobile version: Show either unread count OR last seen */}
-                <div className="lg:hidden">
-                  {unreadCount > 0 ? (
-                    // Unread message badge - top right
-                    <span
-                      className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
-                      px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center"
-                    >
-                      {unreadCount > 9 ? "9+" : unreadCount}
-                    </span>
-                  ) : (
-                    // Last seen badge - only if no unread messages
-                    !isOnline && lastSeenText && (
-                      <span
-                        className="absolute -bottom-1 -right-1 bg-primary text-white text-[10px]
-                        px-1.5 py-0.5 rounded-full font-medium"
-                      >
-                        {lastSeenText}
-                      </span>
-                    )
-                  )}
-                </div>
+                {/* Mobile version: Unread count badge - top right */}
+                {unreadCount > 0 && (
+                  <span
+                    className="lg:hidden absolute -top-1 -right-1 bg-primary text-white text-[10px]
+                    px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
               </div>
 
               {/* User info - only visible on larger screens */}
               <div className="hidden lg:block text-left min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2">
-                  <div className="font-medium truncate">{user.fullName}</div>
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className={`truncate ${unreadCount > 0 ? "font-bold" : "font-medium"}`}>
+                    {user.fullName}
+                  </div>
                   {/* Desktop: Unread count badge */}
                   {unreadCount > 0 && (
-                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0">
-                      {unreadCount > 9 ? "9+" : unreadCount}
+                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0 shadow-sm">
+                      {unreadCount > 99 ? "99+" : unreadCount}
                     </span>
                   )}
                 </div>
                 <div className="text-sm">
                   {isOnline ? (
-                    <span className="text-green-500">Online</span>
+                    <span className="text-green-500 font-medium">● Active now</span>
                   ) : (
-                    <span className="text-zinc-400 text-sm">
-                      {lastSeenText}
+                    <span className="text-zinc-400">
+                      {lastSeenText || "Offline"}
                     </span>
                   )}
                 </div>

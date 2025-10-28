@@ -18,6 +18,7 @@ const ChatContainer = () => {
     typingUserId,
     lastSeenUpdate,
     lastSeenUserId,
+    clearUnreadMessages,
   } = useChatStore();
   const { authUser, emitMessageSeen, emitChatOpened } = useAuthStore();
   const messageEndRef = useRef(null);
@@ -159,7 +160,6 @@ const ChatContainer = () => {
     const isTypingStarted = !previousTypingUserId.current && typingUserId;
 
     if (isTypingStarted && typingUserId === selectedUser?._id) {
-      console.log("⌨️ Typing detected! Playing sound...");
       playTypingSound();
     }
 

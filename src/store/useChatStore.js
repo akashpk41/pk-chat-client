@@ -106,12 +106,38 @@ export const useChatStore = create((set, get) => ({
   setSelectedUser: (selectedUser) => {
     set({ selectedUser });
 
-    // Clear unread messages for this user
+    // Clear unread messages for this user when chat is opened
     const { unreadMessages } = get();
     if (selectedUser && unreadMessages[selectedUser._id]) {
       const newUnreadMessages = { ...unreadMessages };
       delete newUnreadMessages[selectedUser._id];
       set({ unreadMessages: newUnreadMessages });
     }
+  },
+
+  // Add unread message when new message arrives
+  addUnreadMessage: (senderId) => {
+    const { unreadMessages, selectedUser } = get();
+
+    // Don't count if chat is already open with this user
+    if (selectedUser && selectedUser._id === senderId) {
+      return;
+    }
+
+    const currentCount = unreadMessages[senderId] || 0;
+    set({
+      unreadMessages: {
+        ...unreadMessages,
+        [senderId]: currentCount + 1,
+      },
+    });
+  },
+
+  // Clear unread for specific user
+  clearUnreadMessages: (userId) => {
+    const { unreadMessages } = get();
+    const newUnreadMessages = { ...unreadMessages };
+    delete newUnreadMessages[userId];
+    set({ unreadMessages: newUnreadMessages });
   },
 }));

@@ -113,28 +113,26 @@ export const useAuthStore = create((set, get) => ({
     import("./useChatStore").then(({ useChatStore }) => {
       socket.on("newMessage", (newMessage) => {
         const chatState = useChatStore.getState();
-        const { selectedUser, unreadMessages = {} } = chatState;
+        const { selectedUser } = chatState;
         const currentUserId = get().authUser?._id;
 
+        // Ignore own messages
         if (newMessage.senderId === currentUserId) {
           return;
         }
 
-        if (!selectedUser || selectedUser._id !== newMessage.senderId) {
-          const currentCount = unreadMessages[newMessage.senderId] || 0;
-          const newCount = currentCount + 1;
+        // Check if message is from currently selected user
+        const isMessageFromSelectedUser = selectedUser && selectedUser._id === newMessage.senderId;
 
-          useChatStore.setState({
-            unreadMessages: {
-              ...unreadMessages,
-              [newMessage.senderId]: newCount,
-            },
-          });
-        } else {
+        if (isMessageFromSelectedUser) {
+          // Add to current chat
           const currentMessages = chatState.messages || [];
           useChatStore.setState({
             messages: [...currentMessages, newMessage],
           });
+        } else {
+          // Add to unread count
+          useChatStore.getState().addUnreadMessage(newMessage.senderId);
         }
       });
     });
