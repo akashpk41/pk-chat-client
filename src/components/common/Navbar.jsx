@@ -4,7 +4,7 @@ import { LogOut, MessageSquare, Settings, User } from "lucide-react";
 // import logo from '../../assets/pk_chat_logo.png'
 
 const Navbar = () => {
-  const { logOut, authUser } = useAuthStore();
+  const { logOutUser, authUser } = useAuthStore();
 
   return (
     <header className="sticky sticky top-0  z-50 bg-base-100/80 backdrop-blur-lg border-b border-base-300">
@@ -67,7 +67,7 @@ const Navbar = () => {
                   <span className="hidden sm:inline">Profile</span>
                 </Link>
 
-                <button className="flex gap-2 items-center" onClick={logOut}>
+                <button className="flex gap-2 items-center" onClick={logOutUser}>
                   <LogOut className="size-6" />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
