@@ -245,7 +245,7 @@ const ChatContainer = () => {
   const isSelectedUserTyping = typingUserId === selectedUser?._id;
 
   return (
-    <div className="flex flex-col flex-1 overflow-auto">
+    <div className="flex flex-col z flex-1 overflow-auto">
       <ChatHeader />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => {
