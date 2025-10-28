@@ -149,10 +149,10 @@ const MessageInput = () => {
       // Play send sound after successful send
       playSendSound();
 
-      // Re-focus input after sending
-      setTimeout(() => {
-        textInputRef.current?.focus();
-      }, 0);
+      // // Re-focus input after sending
+      // setTimeout(() => {
+      //   textInputRef.current?.focus();
+      // }, 0);
     } catch (err) {
       console.log(`Failed To Send Messages`, err);
       toast.error("Failed to send message");

@@ -59,7 +59,7 @@ const Settings = () => {
                     <button
                       key={t}
                       className={`
-                        group relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200
+                        group cursor-pointer relative flex flex-col items-center gap-2 p-3 rounded-xl transition-all duration-200
                         ${
                           theme === t
                             ? "bg-primary/10 ring-2 ring-primary shadow-lg scale-105"
@@ -188,7 +188,7 @@ const Settings = () => {
                         value="This is a preview"
                         readOnly
                       />
-                      <button className="btn btn-primary btn-sm min-h-0 h-8 w-8 p-0">
+                      <button className="btn cursor-pointer btn-primary btn-sm min-h-0 h-8 w-8 p-0">
                         <Send size={20} />
                       </button>
                     </div>

@@ -15,36 +15,36 @@ const DeveloperProfile = () => {
     {
       icon: FaFacebookF,
       href: "https://www.facebook.com/atapk41/",
-      color: "hover:text-blue-600",
-      bg: "hover:bg-blue-500/10",
+      color: "   text-blue-600",
+      bg: "   bg-blue-500/10",
       name: "Facebook",
     },
     {
       icon: FaWhatsapp,
       href: "https://wa.me/8801405700935?text=Hello%20I%20am%20interested",
-      color: "hover:text-green-500",
-      bg: "hover:bg-green-500/10",
+      color: "   text-green-500",
+      bg: "   bg-green-500/10",
       name: "WhatsApp",
     },
     {
       icon: FaFacebookMessenger,
       href: "https://m.me/atapk41",
-      color: "hover:text-blue-500",
-      bg: "hover:bg-blue-500/10",
+      color: "   text-blue-500",
+      bg: "   bg-blue-500/10",
       name: "Messenger",
     },
     {
       icon: FaGithub,
       href: "https://github.com/akashpk41",
-      color: "hover:text-gray-700",
-      bg: "hover:bg-gray-500/10",
+      color: "   text-gray-700",
+      bg: "   bg-gray-500/10",
       name: "GitHub",
     },
     {
       icon: FaLinkedinIn,
       href: "https://linkedin.com/in/akashpk41",
-      color: "hover:text-blue-700",
-      bg: "hover:bg-blue-700/10",
+      color: "   text-blue-700",
+      bg: "   bg-blue-700/10",
       name: "LinkedIn",
     },
   ];
@@ -121,14 +121,11 @@ const DeveloperProfile = () => {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`group relative p-3 bg-base-200 rounded-xl ${social.color} ${social.bg} transition-all duration-300 hover:scale-110 hover:shadow-lg border border-base-300`}
+                      className={`group relative p-3 bg-base-200 rounded-xl ${social.color} ${social.bg} transition-all duration-300    scale-110    shadow-lg border border-base-300`}
                       title={social.name}
                     >
                       <Icon className="text-3xl" />
-                      {/* Tooltip */}
-                      <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-base-content text-base-100 text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                        {social.name}
-                      </span>
+                     
                     </a>
                   );
                 })}
