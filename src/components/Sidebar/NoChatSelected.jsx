@@ -1,49 +1,120 @@
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Sparkles, Users, Zap } from "lucide-react";
 
 const NoChatSelected = () => {
   return (
-   <div className="w-full flex flex-1 flex-col items-center justify-center p-0 bg-base-100/50">
-  <div className="max-w-md text-center space-y-6">
-    {/* PK Icon with Rotating Circles */}
-    <div className="flex justify-center gap-4 mb-4">
-      <div className="relative">
-        {/* Outer Rotating Ring */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-24 h-24 rounded-full border-4 border-transparent border-t-purple-500 border-r-pink-500 animate-spin"></div>
-        </div>
+    <div className="w-full flex flex-1 flex-col items-center justify-center p-0 bg-base-100/50 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Floating Gradient Orbs */}
+        <div className="absolute top-[20%] left-[10%] w-40 h-40 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"
+             style={{ animationDuration: '3s' }}></div>
+        <div className="absolute bottom-[25%] right-[15%] w-48 h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse"
+             style={{ animationDuration: '4s', animationDelay: '1s' }}></div>
+        <div className="absolute top-[60%] left-[70%] w-32 h-32 bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-full blur-2xl animate-pulse"
+             style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}></div>
 
-        {/* Inner Rotating Ring */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className="w-20 h-20 rounded-full border-4 border-transparent border-t-blue-500 border-l-cyan-500 animate-spin"
-            style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}
-          ></div>
+        {/* Floating Sparkles with Bounce Animation */}
+        <div className="absolute top-[15%] right-[20%] animate-bounce opacity-50"
+             style={{ animationDuration: '3s', animationDelay: '0s' }}>
+          <Sparkles className="w-5 h-5 text-purple-500" />
         </div>
-
-        {/* Glowing Background */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 opacity-20 blur-xl"></div>
+        <div className="absolute bottom-[30%] left-[25%] animate-bounce opacity-50"
+             style={{ animationDuration: '2.5s', animationDelay: '1s' }}>
+          <Sparkles className="w-6 h-6 text-pink-500" />
         </div>
+        <div className="absolute top-[45%] right-[35%] animate-bounce opacity-40"
+             style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
+          <Sparkles className="w-4 h-4 text-blue-500" />
+        </div>
+        <div className="absolute top-[35%] left-[15%] animate-bounce opacity-40"
+             style={{ animationDuration: '2.8s', animationDelay: '0.3s' }}>
+          <Zap className="w-5 h-5 text-cyan-500" />
+        </div>
+      </div>
 
-        {/* PK Container */}
-        <div className="relative w-24 h-24 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border border-purple-500/30 flex items-center justify-center shadow-lg">
-            {/* PK Text */}
-            <div className="text-3xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400">
-              PK
+      <div className="max-w-md text-center space-y-6 relative z-10">
+        {/* PK Icon with Colorful Pulsing Effects */}
+        <div className="flex justify-center gap-4 mb-4 animate-bounce" style={{ animationDuration: '3s' }}>
+          <div className="relative">
+            {/* Multi-layered Pulsing Glow Rings */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-32 h-32 rounded-full bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-purple-500/30 animate-pulse blur-xl"
+                   style={{ animationDuration: '2s' }}></div>
             </div>
+
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-500/40 via-cyan-500/40 to-blue-500/40 animate-pulse blur-lg"
+                   style={{ animationDuration: '3s', animationDelay: '0.5s' }}></div>
+            </div>
+
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-500/30 via-purple-500/30 to-pink-500/30 animate-pulse blur-md"
+                   style={{ animationDuration: '2.5s', animationDelay: '1s' }}></div>
+            </div>
+
+            {/* PK Container with Enhanced Styling */}
+            <div className="relative w-28 h-28 flex items-center justify-center">
+              <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-2 border-purple-500/50 flex items-center justify-center shadow-2xl shadow-purple-500/30">
+                {/* PK Text with Vibrant Gradient */}
+                <div className="text-5xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+                  PK
+                </div>
+              </div>
+            </div>
+
+            {/* Animated Corner Dots with Colors */}
+            <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-ping"
+                 style={{ animationDuration: '2s' }}></div>
+            <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full animate-ping"
+                 style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}></div>
+            <div className="absolute -top-2 -left-2 w-3 h-3 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full animate-ping"
+                 style={{ animationDuration: '3s', animationDelay: '1s' }}></div>
+            <div className="absolute -bottom-2 -right-2 w-3 h-3 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full animate-ping"
+                 style={{ animationDuration: '2.2s', animationDelay: '0.7s' }}></div>
+          </div>
+        </div>
+
+        {/* Welcome Text with Floating Animation */}
+        <div className="space-y-3 animate-bounce" style={{ animationDuration: '3s', animationDelay: '0.3s' }}>
+          <h2 className="text-3xl font-bold">
+            <span className="inline-block bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.7)]" style={{ WebkitTextStroke: '0.8px rgba(168,85,247,0.5)' }}>
+              Welcome to PK Chat!
+            </span>
+          </h2>
+          <p className="text-base-content text-lg font-semibold">
+            Select a conversation from the sidebar to start chatting
+          </p>
+        </div>
+
+        {/* Enhanced Feature Pills with Icons */}
+        <div className="flex flex-wrap justify-center gap-3 pt-4 animate-bounce" style={{ animationDuration: '3s', animationDelay: '0.6s' }}>
+          <div className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/30 to-pink-500/30 border-2 border-purple-500/60 backdrop-blur-sm flex items-center gap-2 hover:scale-110 transition-transform shadow-lg">
+            <MessageSquare className="w-4 h-4 text-purple-500" />
+            <span className="text-sm font-bold text-purple-600">Real-time Chat</span>
+          </div>
+          <div className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border-2 border-blue-500/60 backdrop-blur-sm flex items-center gap-2 hover:scale-110 transition-transform shadow-lg">
+            <Sparkles className="w-4 h-4 text-blue-500" />
+            <span className="text-sm font-bold text-blue-600">Premium Features</span>
+          </div>
+          <div className="px-4 py-2 rounded-full bg-gradient-to-r from-pink-500/30 to-purple-500/30 border-2 border-pink-500/60 backdrop-blur-sm flex items-center gap-2 hover:scale-110 transition-transform shadow-lg">
+            <Users className="w-4 h-4 text-pink-500" />
+            <span className="text-sm font-bold text-pink-600">Connect Instantly</span>
+          </div>
+        </div>
+
+        {/* Animated Tip Box */}
+        <div className="pt-6 animate-bounce" style={{ animationDuration: '3s', animationDelay: '0.9s' }}>
+          <div className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 border-2 border-purple-500/50 backdrop-blur-sm shadow-lg">
+            <p className="text-base font-bold flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-500 animate-bounce" style={{ animationDuration: '2s' }} />
+              <span className="text-purple-600">
+                💡 Click on any user to start a conversation
+              </span>
+            </p>
           </div>
         </div>
       </div>
     </div>
-
-    {/* Welcome Text */}
-    <h2 className="text-2xl font-bold">Welcome to PK Chat!</h2>
-    <p className="text-base-content/60">
-      Select a conversation from the sidebar to start chatting
-    </p>
-  </div>
-</div>
   );
 };
 
