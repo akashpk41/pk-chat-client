@@ -290,7 +290,7 @@ const ChatContainer = () => {
             <div className="relative inline-block">
               <div className="size-40 rounded-full border-4 border-primary/30 overflow-hidden shadow-2xl shadow-primary/20 ring-4 ring-primary/10">
                 <img
-                  src={selectedUser.profilePic || "/avatar.png"}
+                  src={selectedUser.profilePic || "/avatar3.png"}
                   alt="profile pic"
                   className="w-full h-full object-cover"
                 />
@@ -349,7 +349,7 @@ const ChatContainer = () => {
               {!isSentByMe && (
                 <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-base-300 shadow-md">
                   <img
-                    src={selectedUser.profilePic || "/avatar.png"}
+                    src={selectedUser.profilePic || "/avatar3.png"}
                     alt="profile pic"
                     className="w-full h-full object-cover"
                   />
@@ -459,7 +459,7 @@ const ChatContainer = () => {
                         ) : messageSeen ? (
                           <div className="size-4 rounded-full overflow-hidden border border-success flex-shrink-0 shadow-sm">
                             <img
-                              src={selectedUser.profilePic || "/avatar.png"}
+                              src={selectedUser.profilePic || "/avatar3.png"}
                               alt="seen"
                               className="w-full h-full object-cover"
                             />
@@ -506,7 +506,7 @@ const ChatContainer = () => {
               {isSentByMe && (
                 <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary/30 shadow-md">
                   <img
-                    src={authUser.profilePic || "/avatar.png"}
+                    src={authUser.profilePic || "/avatar3.png"}
                     alt="profile pic"
                     className="w-full h-full object-cover"
                   />
@@ -521,7 +521,7 @@ const ChatContainer = () => {
           <div className="flex items-end gap-2 justify-start">
             <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary/30 shadow-md animate-pulse">
               <img
-                src={selectedUser.profilePic || "/avatar.png"}
+                src={selectedUser.profilePic || "/avatar3.png"}
                 alt="profile pic"
                 className="w-full h-full object-cover"
               />

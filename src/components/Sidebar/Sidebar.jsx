@@ -202,7 +202,7 @@ const Sidebar = () => {
   `}
                 >
                   <img
-                    src={user.profilePic || "/avatar.png"}
+                    src={user.profilePic || "/avatar3.png"}
                     alt={user.fullName}
                     className={`w-full h-full object-cover rounded-full ${
                       isSelected ? "ring-2 ring-base-100" : ""

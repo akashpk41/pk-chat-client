@@ -66,7 +66,7 @@ const Profile = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full animate-pulse opacity-20 blur-md" />
 
                   <img
-                    src={selectedImg || authUser?.profilePic || "/avatar.png"}
+                    src={selectedImg || authUser?.profilePic || "avatar3.png"}
                     alt="Profile"
                     className="relative size-38 rounded-full object-cover border-4 border-primary shadow-xl"
                   />

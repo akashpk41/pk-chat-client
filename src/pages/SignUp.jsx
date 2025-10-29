@@ -48,168 +48,203 @@ const SignUp = () => {
   };
 
   return (
-    <div className="mt-2 grid md:grid-cols-2">
-      {/* left side */}
-      <div className="flex flex-col justify-center items-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-8">
-          {/* LOGO */}
-          <div className="text-center mb-8">
-            <div className="flex flex-col items-center gap-2 group">
-              <motion.div
-                className="size-20 rounded-xl bg-primary/10 flex items-center justify-center
-    group-hover:bg-primary/20 transition-colors relative overflow-hidden"
-                animate={{
-                  y: [0, -8, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                {/* Subtle glow effect */}
-                <motion.div
-                  className="absolute inset-0 bg-primary/5 rounded-xl"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.5, 0.8, 0.5],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+   <div className="mt-2 grid md:grid-cols-2 ">
+  {/* left side */}
+  <div className="flex flex-col justify-center items-center p-6 sm:p-12">
+    <div className="w-full max-w-md space-y-8">
+      {/* LOGO */}
+      <div className="text-center mb-8">
+        <div className="flex flex-col items-center gap-2 group">
+          <motion.div
+            className="size-24 rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/10
+              flex items-center justify-center group-hover:shadow-2xl group-hover:shadow-primary/30
+              transition-all duration-300 relative overflow-hidden border-2 border-primary/20"
+            animate={{
+              y: [0, -8, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            {/* Animated glow effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 rounded-2xl blur-xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
 
-                <motion.div
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                >
-                  <MessageSquare className="size-14 text-primary relative z-10" />
-                </motion.div>
-              </motion.div>
-              <h1 className="text-4xl font-bold mt-2">
-                Create <span className="text-secondary">Account</span>
-              </h1>
-              <p className="text-base-content/60">
-                Get started with your free account
-              </p>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Full Name</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="text"
-                  className={`input input-bordered w-full pl-10`}
-                  placeholder="John Doe"
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type="email"
-                  className={`input input-bordered w-full pl-10`}
-                  placeholder="you@example.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="size-5 text-base-content/40" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className={`input input-bordered w-full pl-10`}
-                  placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="size-5 text-base-content/40" />
-                  ) : (
-                    <Eye className="size-5 text-base-content/40" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="btn text-xl  p-6  btn-primary w-full"
-              disabled={isSigningUp}
+            <motion.div
+              animate={{
+                rotate: [0, 5, -5, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
             >
-              {isSigningUp ? (
-                <>
-                  <Loader2 className="size-7 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Create Account"
-              )}
-            </button>
-          </form>
+              <MessageSquare className="size-16 text-primary relative z-10 drop-shadow-lg" />
+            </motion.div>
+          </motion.div>
 
-          <div className="text-center">
-            <p className="text-md  font-semibold">
-              Already Have an Account?{" "}
-              <Link to="/login" className="link link-primary">
-                Log In
-              </Link>
-            </p>
-          </div>
+          <h1 className=" text-4xl md:text-5xl font-extrabold mt-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Create <span className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Account</span>
+          </h1>
+          <p className="text-base-content/70 text-lg font-medium">
+            Get started with your free account
+          </p>
         </div>
       </div>
 
-      {/* right side */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold text-base">Full Name</span>
+          </label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none
+              transition-colors group-focus-within:text-primary">
+              <User className="size-5 text-base-content/50 group-focus-within:text-primary
+                transition-colors duration-200" />
+            </div>
+            <input
+              type="text"
+              className="input input-bordered w-full pl-12 h-12 rounded-xl
+                bg-base-200 border-2 border-base-300
+                focus:border-primary focus:bg-base-100 focus:outline-none
+                transition-all duration-200 text-base
+                hover:border-primary/50"
+              placeholder="John Doe"
+              value={formData.fullName}
+              onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
+            />
+          </div>
+        </div>
 
-      <AuthImagePattern
-        title="Join our community"
-        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
-      />
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold text-base">Email</span>
+          </label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none
+              transition-colors group-focus-within:text-primary">
+              <Mail className="size-5 text-base-content/50 group-focus-within:text-primary
+                transition-colors duration-200" />
+            </div>
+            <input
+              type="email"
+              className="input input-bordered w-full pl-12 h-12 rounded-xl
+                bg-base-200 border-2 border-base-300
+                focus:border-primary focus:bg-base-100 focus:outline-none
+                transition-all duration-200 text-base
+                hover:border-primary/50"
+              placeholder="you@example.com"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+            />
+          </div>
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-semibold text-base">Password</span>
+          </label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center
+              transition-colors text-primary">
+             <Lock className="h-5 bg-red-700 w-5 text-base-content/50 group-focus-within:text-primary transition-colors duration-200" />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              className="input input-bordered w-full pl-12 pr-12 h-12 rounded-xl
+                bg-base-200 border-2 border-base-300
+                focus:border-primary focus:bg-base-100 focus:outline-none
+                transition-all duration-200 text-base
+                hover:border-primary/50"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-4 flex items-center
+                text-base-content/50 hover:text-primary transition-colors duration-200"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff className="size-5" />
+              ) : (
+                <Eye className="size-5" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary w-full h-14 text-lg font-semibold rounded-xl
+            shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40
+            hover:scale-[1.02] active:scale-[0.98]
+            transition-all duration-200
+            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          disabled={isSigningUp}
+        >
+          {isSigningUp ? (
+            <>
+              <Loader2 className="size-6 animate-spin" />
+              Creating account...
+            </>
+          ) : (
+            <>
+              <span>Create Account</span>
+              <motion.div
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                →
+              </motion.div>
+            </>
+          )}
+        </button>
+      </form>
+
+      <div className="text-center pt-0">
+        <p className="text-xl text-base-content/70">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-semibold text-primary hover:text-primary/80
+              transition-colors duration-200 underline  underline-offset-4"
+          >
+            Log In
+          </Link>
+        </p>
+      </div>
     </div>
+  </div>
+
+  {/* right side */}
+  <AuthImagePattern
+    title="Join our community"
+    subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
+  />
+</div>
   );
 };
 export default SignUp;

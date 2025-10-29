@@ -68,7 +68,7 @@ return (
               </motion.div>
             </motion.div>
 
-            <h1 className="text-5xl font-extrabold mt-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-extrabold mt-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Welcome <span className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Back</span>
             </h1>
             <p className="text-base-content/70 text-lg font-medium">
@@ -171,13 +171,13 @@ return (
           </button>
         </form>
 
-        <div className="text-center pt-4">
-          <p className="text-base text-base-content/70">
+        <div className="text-center pt-0">
+          <p className="text-lg text-base-content/70">
             Don&apos;t have an account?{" "}
             <Link
               to="/signup"
-              className="font-semibold text-primary hover:text-primary/80
-                transition-colors duration-200 hover:underline underline-offset-4"
+              className="font-semibold text-primary
+                transition-colors duration-200 underline underline-offset-4"
             >
               Create Account
             </Link>
