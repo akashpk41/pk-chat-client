@@ -177,7 +177,7 @@ const MessageInput = () => {
     };
   }, [selectedUser]);
 return (
-  <div className="p-1 py-4 w-full border-t border-base-300 bg-base-100">
+  <div className="p-1 border-t border-base-300 bg-base-100">
     {imagePreview && (
       <div className="mb-3 flex items-center gap-2 animate-in slide-in-from-bottom duration-200">
         <div className="relative group">
