@@ -253,7 +253,6 @@ const ChatContainer = () => {
     setEditText("");
   };
 
-  // ✅ Handle Delete Message
   const handleDeleteClick = async (messageId) => {
     try {
       await deleteMessage(messageId);
@@ -402,10 +401,10 @@ const ChatContainer = () => {
                           <div className="absolute right-0 mt-1 bg-base-100 rounded-lg shadow-xl border border-base-300 py-1 z-10 min-w-32 animate-in fade-in zoom-in-95 duration-200">
                             <button
                               onClick={() => handleEditClick(message)}
-                              className="w-full px-4 py-2 text-left text-sm hover:bg-base-200 flex items-center gap-2 transition-colors"
+                              className="w-full px-4 py-2 text-left text-sm text-warning hover:bg-base-200 flex items-center gap-2 transition-colors"
                             >
                               <Edit2 className="w-4 h-4" />
-                              <span>Edit</span>
+                              <span >Edit</span>
                             </button>
                             <button
                               onClick={() => handleDeleteClick(message._id)}
@@ -572,7 +571,7 @@ const ChatContainer = () => {
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={handleCancelEdit}
-                className="btn btn-ghost"
+                className="btn btn-outline"
               >
                 Cancel
               </button>

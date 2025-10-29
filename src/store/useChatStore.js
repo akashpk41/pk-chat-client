@@ -110,7 +110,7 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  // ✅ Delete Message Function
+  //  Delete Message Function
   deleteMessage: async (messageId) => {
     const { messages } = get();
     const authUser = useAuthStore.getState().authUser;
