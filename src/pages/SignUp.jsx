@@ -48,7 +48,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
+    <div className="mt-2 grid md:grid-cols-2">
       {/* left side */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
@@ -95,7 +95,9 @@ const SignUp = () => {
                   <MessageSquare className="size-14 text-primary relative z-10" />
                 </motion.div>
               </motion.div>
-              <h1 className="text-4xl font-bold mt-2">Create Account</h1>
+              <h1 className="text-4xl font-bold mt-2">
+                Create <span className="text-secondary">Account</span>
+              </h1>
               <p className="text-base-content/60">
                 Get started with your free account
               </p>

@@ -76,11 +76,11 @@ const Sidebar = () => {
   if (isUserLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-20 md:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       {/* Header */}
       <div className="border-b border-base-300 w-full p-5">
         {/* Mobile Layout */}
-        <div className="lg:hidden flex flex-col items-center gap-2">
+        <div className="md:hidden flex flex-col items-center gap-2">
           <div className="relative">
             <Users className="size-6" />
             {totalUnread > 0 && (
@@ -106,7 +106,7 @@ const Sidebar = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden lg:block">
+        <div className="hidden md:block">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Users className="size-6" />
@@ -152,12 +152,12 @@ const Sidebar = () => {
               key={user._id}
               onClick={() => setSelectedUser(user)}
               className={`
-                w-full py-3 flex items-center gap-3
+                w-full py-3 cursor-pointer flex items-center gap-3
                 hover:bg-base-300 transition-colors
                 ${isSelected ? "bg-base-300 ring-1 ring-primary/20" : ""}
               `}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative mx-auto md:mx-0">
                 {/* Avatar with special ring for unread messages */}
                 <div
                   className={`
@@ -181,7 +181,7 @@ const Sidebar = () => {
                 )}
 
                 {/* Mobile version badges */}
-                <div className="lg:hidden">
+                <div className="md:hidden">
                   {unreadCount > 0 ? (
                     // Unread count badge - top right (priority over last seen)
                     <span
@@ -209,7 +209,7 @@ const Sidebar = () => {
               </div>
 
               {/* User info - only visible on larger screens */}
-              <div className="hidden lg:block text-left min-w-0 flex-1">
+              <div className="hidden md:block text-left min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <div
                     className={`truncate ${
@@ -242,7 +242,7 @@ const Sidebar = () => {
         })}
 
         {filteredUsers.length === 0 && (
-          <div className="text-center text-zinc-500 py-4 text-sm lg:text-base">
+          <div className="text-center text-zinc-500 py-4 text-sm md:text-base">
             No {showOnlineOnly ? "online" : ""} users
           </div>
         )}

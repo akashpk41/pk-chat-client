@@ -20,14 +20,14 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen grid lg:grid-cols-2">
+    <div className="mt-2 grid md:grid-cols-2">
       {/* Left Side - Form */}
       <div className="flex flex-col justify-center items-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
-               <motion.div
+              <motion.div
                 className="size-20 rounded-xl bg-primary/10 flex items-center justify-center
     group-hover:bg-primary/20 transition-colors relative overflow-hidden"
                 animate={{
@@ -67,8 +67,12 @@ const Login = () => {
                   <MessageSquare className="size-14 text-primary relative z-10" />
                 </motion.div>
               </motion.div>
-              <h1 className="text-4xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-3xl-content/60">Log In to your account</p>
+              <h1 className="text-4xl font-bold mt-2">
+                Welcome <span className="text-secondary">Back</span>
+              </h1>
+              <p className=" text-lg text-xl-content/60">
+                Log In to your account
+              </p>
             </div>
           </div>
 

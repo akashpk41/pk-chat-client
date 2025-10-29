@@ -257,7 +257,36 @@ const ChatContainer = () => {
   return (
     <div className="flex flex-col z flex-1 overflow-auto">
       <ChatHeader />
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+
+
+
+      <div className="flex-1 overflow-y-auto px-2 py-4 space-y-4">
+
+{/* Empty Chat State - First Time Conversation */}
+        {messages.length === 0 && !isMessageLoading && (
+          <div className="flex flex-col items-center justify-center h-full space-y-4 px-2">
+            <div className="size-20 rounded-full border-4 border-primary overflow-hidden flex-shrink-0">
+              <img
+                src={selectedUser.profilePic || "/avatar.png"}
+                alt="profile pic"
+                className="w-52 h-full object-cover"
+              />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-3xl font-semibold text-primary  ">
+                {selectedUser.fullName}
+              </h3>
+              <p className="text-base-content/60">
+                You're now connected on chat
+              </p>
+              <p className="text-sm text-base-content/50 max-w-sm">
+                Say hi to start the conversation 👋
+              </p>
+            </div>
+          </div>
+        )}
+
+
         {messages.map((message) => {
           const messageStatus = getMessageStatus(message);
           const isSentByMe = message.senderId === authUser._id;
@@ -326,7 +355,7 @@ const ChatContainer = () => {
                     {/* Message Status Indicator (only for sent messages) */}
                     {isSentByMe && (
                       <div
-                        className={`flex items-center justify-end gap-1 ${
+                        className={`flex items-center justify-start gap-1 ${
                           message.text
                             ? "mt-1"
                             : "absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5"
@@ -337,7 +366,7 @@ const ChatContainer = () => {
                           <Clock className="w-3 h-3 opacity-60" />
                         ) : messageSeen ? (
                           // Seen - show receiver's profile pic
-                          <div className="size-4 rounded-full overflow-hidden border-2 border-white/50 flex-shrink-0">
+                          <div className="size-5 rounded-full overflow-hidden border-2 border-success flex-shrink-0">
                             <img
                               src={selectedUser.profilePic || "/avatar.png"}
                               alt="seen"

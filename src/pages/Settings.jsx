@@ -33,9 +33,9 @@ const Settings = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {/* Theme Selection Panel */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="md:col-span-2 space-y-4">
             <div className="card bg-base-100 shadow-xl border border-primary">
               <div className="card-body">
                 <div className="flex items-center justify-between mb-4">
@@ -116,7 +116,7 @@ const Settings = () => {
           </div>
 
           {/* Preview Panel */}
-          <div className="lg:col-span-1">
+          <div className="md:col-span-1">
             <div className="card bg-base-100 shadow-xl border border-base-300 sticky top-24">
               <div className="card-body p-4">
                 <div className="flex items-center gap-2 mb-3">
