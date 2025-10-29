@@ -169,87 +169,93 @@ const Sidebar = () => {
           const isSelected = selectedUser?._id === user._id;
 
           return (
-            <button
-              key={user._id}
-              onClick={() => setSelectedUser(user)}
-              className={`
-                w-full py-3 flex items-center gap-3
-                hover:bg-base-300 transition-colors
-                ${isSelected ? "bg-base-300 ring-1 ring-primary/20" : ""}
-              `}
-            >
-              <div className="relative mx-auto lg:mx-0">
-                {/* Avatar with special ring for unread messages */}
-                <div className={`
-                  size-12 rounded-full overflow-hidden
-                  ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
-                `}>
-                  <img
-                    src={user.profilePic || "/avatar.png"}
-                    alt={user.fullName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+        <button
+  key={user._id}
+  onClick={() => setSelectedUser(user)}
+  className={`
+    w-full py-3 flex cursor-pointer items-center gap-3
+    hover:bg-base-300 transition-colors
+  `}
+>
+  <div className="relative mx-auto lg:mx-0">
+    {/* Avatar with special ring for unread or selected */}
+    <div
+      className={`
+        size-12 rounded-full overflow-hidden relative
+        ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
+        ${isSelected ? "ring-4 ring-secondary ring-offset-2 ring-offset-base-100" : ""}
+      `}
+    >
+      <img
+        src={user.profilePic || "/avatar.png"}
+        alt={user.fullName}
+        className="w-full h-full object-cover rounded-full"
+      />
+    </div>
 
-                {/* Online status indicator - Green dot (both mobile & desktop) */}
-                {isOnline && (
-                  <span
-                    className="absolute bottom-0 right-0 size-3.5 bg-green-500
-                    rounded-full ring-2 ring-zinc-900"
-                  />
-                )}
+    {/* Online status indicator outside avatar */}
+    {isOnline && (
+      <span
+        className="absolute -bottom-1 right-0 size-3.5 bg-green-500
+        rounded-full ring-2 ring-primary animate-pulse-glow"
+      />
+    )}
 
-                {/* Mobile version badges */}
-                <div className="lg:hidden">
-                  {unreadCount > 0 ? (
-                    // Unread count badge - top right (priority over last seen)
-                    <span
-                      className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
-                      px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
-                    >
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  ) : (
-                    // Last seen badge - only if offline AND no unread messages
-                    !isOnline && lastSeenText && (
-                      <span
-                        className="absolute -bottom-1 -right-1 bg-zinc-600 text-white text-[9px]
-                        px-1.5 py-0.5 rounded-full font-medium"
-                      >
-                        {lastSeenText.replace(' ago', '')}
-                      </span>
-                    )
-                  )}
-                </div>
+    {/* Mobile version badges */}
+    <div className="lg:hidden">
+      {unreadCount > 0 ? (
+        <span
+          className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
+          px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
+        >
+          {unreadCount > 99 ? "99+" : unreadCount}
+        </span>
+      ) : (
+        !isOnline &&
+        lastSeenText && (
+          <span
+            className="absolute -bottom-1 -right-1 bg-primary text-white text-[9px]
+            px-1.5 py-0.5 rounded-full font-medium"
+          >
+            {lastSeenText.replace(" ago", "")}
+          </span>
+        )
+      )}
+    </div>
+  </div>
 
-                {/* Desktop: Unread count on avatar (optional, already shown next to name) */}
-                {/* Keeping desktop clean - badge only in text area */}
-              </div>
+  {/* User info */}
+  <div className="hidden lg:block text-left min-w-0 flex-1">
+    <div className="flex items-center justify-between gap-2 mb-1">
+      <div
+        className={`truncate ${
+          unreadCount > 0 ? "font-bold" : "font-medium"
+        }`}
+      >
+        {user.fullName}
+      </div>
 
-              {/* User info - only visible on larger screens */}
-              <div className="hidden lg:block text-left min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-2 mb-1">
-                  <div className={`truncate ${unreadCount > 0 ? "font-bold" : "font-medium"}`}>
-                    {user.fullName}
-                  </div>
-                  {/* Desktop: Unread count badge */}
-                  {unreadCount > 0 && (
-                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0 shadow-sm">
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
-                </div>
-                <div className="text-sm">
-                  {isOnline ? (
-                    <span className="text-green-500 font-medium">● Active now</span>
-                  ) : (
-                    <span className="text-zinc-400">
-                      {lastSeenText || "Offline"}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </button>
+      {/* Desktop: Unread count badge */}
+      {unreadCount > 0 && (
+        <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0 shadow-sm">
+          {unreadCount > 99 ? "99+" : unreadCount}
+        </span>
+      )}
+    </div>
+
+    <div className="text-sm relative">
+      {isOnline ? (
+        <span className="text-green-500 font-medium">● Active now</span>
+      ) : (
+        <span className="text-secondary">
+          {lastSeenText || "Offline"}
+        </span>
+      )}
+    </div>
+  </div>
+</button>
+
+
           );
         })}
 

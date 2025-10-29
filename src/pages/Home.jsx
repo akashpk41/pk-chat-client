@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <div className="h-screen">
-      <div className="flex items-center justify-center h-full px-0">
+      <div className="flex items-center justify-center h-full px-0 md:px-4">
         <div className="rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-2rem)]">
           <div className="flex h-full rounded-lg overflow-hidden">
             <Sidebar />
