@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Camera, Mail, User, Shield, Calendar, CheckCircle2, Upload } from "lucide-react";
+import {
+  Camera,
+  Mail,
+  User,
+  Shield,
+  Calendar,
+  CheckCircle2,
+  Upload,
+} from "lucide-react";
 
 const Profile = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
@@ -72,7 +80,11 @@ const Profile = () => {
                       p-3 rounded-full cursor-pointer
                       transition-all duration-200 shadow-lg
                       border-4 border-base-100
-                      ${isUpdatingProfile ? "animate-pulse pointer-events-none" : "hover:scale-110"}
+                      ${
+                        isUpdatingProfile
+                          ? "animate-pulse pointer-events-none"
+                          : "hover:scale-110"
+                      }
                     `}
                   >
                     {isUpdatingProfile ? (
@@ -92,7 +104,9 @@ const Profile = () => {
                 </div>
 
                 <div className="flex-1 text-center sm:text-left">
-                  <h3 className="font-semibold text-xl mb-2">Update Your Photo</h3>
+                  <h3 className="font-semibold text-xl mb-2">
+                    Update Your Photo
+                  </h3>
                   <p className="text-sm text-base-content/60 mb-3">
                     {isUpdatingProfile
                       ? "Uploading your new profile picture..."
@@ -125,8 +139,42 @@ const Profile = () => {
                     <User className="w-4 h-4" />
                     Full Name
                   </label>
-                  <div className="px-4 py-3 bg-base-200 rounded-lg border border-base-300 font-medium">
+                  <div className="px-4 py-3 bg-base-200 rounded-lg border border-base-300 font-medium flex items-center gap-1">
                     {authUser?.fullName}
+                    {/* Premium Verify Badge */}
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="drop-shadow-md flex-shrink-0"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="11"
+                        fill="url(#verifyGradient)"
+                      />
+                      <path
+                        d="M8 12.5l2.5 2.5L16 9"
+                        stroke="white"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="verifyGradient"
+                          x1="0"
+                          y1="0"
+                          x2="24"
+                          y2="24"
+                        >
+                          <stop offset="0%" stopColor="#0088ff" />
+                          <stop offset="100%" stopColor="#0066ff" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
                   </div>
                 </div>
 
@@ -160,8 +208,12 @@ const Profile = () => {
                       <Calendar className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-base-content/70">Member Since</p>
-                      <p className="font-semibold">{authUser?.createdAt?.split("T")[0]}</p>
+                      <p className="text-sm text-base-content/70">
+                        Member Since
+                      </p>
+                      <p className="font-semibold">
+                        {authUser?.createdAt?.split("T")[0]}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -173,7 +225,9 @@ const Profile = () => {
                       <CheckCircle2 className="w-5 h-5 text-success" />
                     </div>
                     <div>
-                      <p className="text-sm text-base-content/70">Account Status</p>
+                      <p className="text-sm text-base-content/70">
+                        Account Status
+                      </p>
                       <p className="font-semibold text-success">Active</p>
                     </div>
                   </div>
@@ -190,7 +244,9 @@ const Profile = () => {
                       <Shield className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm text-base-content/70">Account Type</p>
+                      <p className="text-sm text-base-content/70">
+                        Account Type
+                      </p>
                       <p className="font-semibold text-primary">Premium User</p>
                     </div>
                   </div>

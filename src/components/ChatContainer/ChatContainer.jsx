@@ -264,26 +264,65 @@ const ChatContainer = () => {
 
 {/* Empty Chat State - First Time Conversation */}
         {messages.length === 0 && !isMessageLoading && (
-          <div className="flex flex-col  items-center h-full space-y-4 px-2">
-            <div className="size-38 rounded-full border-4 border-primary overflow-hidden flex-shrink-0">
-              <img
-                src={selectedUser.profilePic || "/avatar.png"}
-                alt="profile pic"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="text-center space-y-2">
-              <h3 className="text-3xl font-semibold text-primary  ">
-                {selectedUser.fullName}
-              </h3>
-              <p className="text-base-content/60">
-                You're now connected on chat
-              </p>
-              <p className="text-sm text-base-content/50 max-w-sm">
-                Say hi to start the conversation 👋
-              </p>
-            </div>
-          </div>
+          <div className="flex flex-col items-center h-full space-y-4 px-2">
+  <div className="size-38 rounded-full border-4 border-blue-500 overflow-hidden flex-shrink-0 shadow-lg shadow-blue-500/30">
+    <img
+      src={selectedUser.profilePic || "/avatar.png"}
+      alt="profile pic"
+      className="w-full h-full object-cover"
+    />
+  </div>
+  <div className="text-center space-y-2">
+    <div className="flex items-center justify-center gap-2">
+      <h3 className="text-3xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        {selectedUser.fullName}
+      </h3>
+      {/* Premium Verify Badge */}
+      <div className="relative inline-flex">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          className="drop-shadow-lg"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="11"
+            fill="url(#blueGradient)"
+          />
+          <path
+            d="M8 12.5l2.5 2.5L16 9"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <defs>
+            <linearGradient
+              id="blueGradient"
+              x1="0"
+              y1="0"
+              x2="24"
+              y2="24"
+            >
+              <stop offset="0%" stopColor="#0088ff" />
+              <stop offset="100%" stopColor="#0066ff" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    <p className="text-base-content/70 font-medium">
+      You're now connected on chat
+    </p>
+    <p className="text-sm text-base-content/60 max-w-sm flex items-center justify-center gap-1.5">
+      Say hi to start the conversation
+      <span className="inline-block animate-bounce">👋</span>
+    </p>
+  </div>
+</div>
         )}
 
 
@@ -412,27 +451,35 @@ const ChatContainer = () => {
           );
         })}
 
-        {/* Typing Indicator */}
-        {isSelectedUserTyping && (
-          <div className="chat chat-start">
-            <div className="chat-image avatar">
-              <div className="size-10 rounded-full border">
-                <img
-                  src={selectedUser.profilePic || "/avatar.png"}
-                  alt="profile pic"
-                />
-              </div>
-            </div>
-            <div className="chat-bubble bg-base-200">
-              <div className="flex items-center gap-1">
-                <div className="typing-dot"></div>
-                <div className="typing-dot"></div>
-                <div className="typing-dot"></div>
-              </div>
-            </div>
-          </div>
-        )}
 
+
+
+{/* Typing Indicator - Only show when selected user is typing */}
+{isSelectedUserTyping && (
+  <div className="chat chat-start">
+    <div className="chat-image avatar">
+      <div className="size-10 rounded-full border-2 border-blue-500/30 shadow-md shadow-blue-500/20">
+        <img
+          src={selectedUser.profilePic || "/avatar.png"}
+          alt="profile pic"
+          className="rounded-full"
+        />
+      </div>
+    </div>
+    <div className="flex flex-col gap-1">
+      <span className="text-xs font-medium text-blue-500 px-3">
+        {selectedUser.fullName} is typing...
+      </span>
+      <div className="chat-bubble bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-2 h-2 rounded-full bg-pink-500 animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
         <div ref={messageEndRef} />
       </div>
       <MessageInput />

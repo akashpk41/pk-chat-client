@@ -178,27 +178,26 @@ const Sidebar = () => {
   `}
 >
   <div className="relative mx-auto lg:mx-0">
-    {/* Avatar with special ring for unread or selected */}
-    <div
-      className={`
-        size-12 rounded-full overflow-hidden relative
-        ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
-        ${isSelected ? "ring-4 ring-secondary ring-offset-2 ring-offset-base-100" : ""}
-      `}
-    >
-      <img
-        src={user.profilePic || "/avatar.png"}
-        alt={user.fullName}
-        className="w-full h-full object-cover rounded-full"
-      />
-    </div>
-
-    {/* Online status indicator outside avatar */}
+    {/* Avatar with premium gradient ring for selected */}
+   <div
+  className={`
+    size-12 rounded-full overflow-hidden relative
+    ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
+    ${isSelected ? "ring-4 ring-offset-2 ring-offset-green-100 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-[3px]" : ""}
+  `}
+>
+  <img
+    src={user.profilePic || "/avatar.png"}
+    alt={user.fullName}
+    className={`w-full h-full object-cover rounded-full ${isSelected ? "ring-2 ring-base-100" : ""}`}
+  />
+</div>
+    {/* Online status with blink effect */}
     {isOnline && (
-      <span
-        className="absolute -bottom-1 right-0 size-3.5 bg-green-500
-        rounded-full ring-2 ring-primary animate-pulse-glow"
-      />
+      <span className="absolute -bottom-1 right-0 size-3.5 rounded-full ring-2 ring-base-100">
+        <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+        <span className="relative inline-flex rounded-full h-full w-full bg-green-500"></span>
+      </span>
     )}
 
     {/* Mobile version badges */}
@@ -227,12 +226,48 @@ const Sidebar = () => {
   {/* User info */}
   <div className="hidden lg:block text-left min-w-0 flex-1">
     <div className="flex items-center justify-between gap-2 mb-1">
-      <div
-        className={`truncate ${
-          unreadCount > 0 ? "font-bold" : "font-medium"
-        }`}
-      >
-        {user.fullName}
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span
+          className={`truncate bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${
+            unreadCount > 0 ? "font-bold" : "font-semibold"
+          }`}
+        >
+          {user.fullName}
+        </span>
+        {/* Premium Verify Badge */}
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          className="drop-shadow-md flex-shrink-0"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="11"
+            fill="url(#userVerify-{user._id})"
+          />
+          <path
+            d="M8 12.5l2.5 2.5L16 9"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <defs>
+            <linearGradient
+              id="userVerify-{user._id}"
+              x1="0"
+              y1="0"
+              x2="24"
+              y2="24"
+            >
+              <stop offset="0%" stopColor="#0088ff" />
+              <stop offset="100%" stopColor="#0066ff" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
 
       {/* Desktop: Unread count badge */}
@@ -245,16 +280,21 @@ const Sidebar = () => {
 
     <div className="text-sm relative">
       {isOnline ? (
-        <span className="text-green-500 font-medium">● Active now</span>
+        <span className="text-green-500 font-medium flex items-center gap-1.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          Active now
+        </span>
       ) : (
-        <span className="text-secondary">
-        Active  {lastSeenText || "Offline"}
+        <span className="text-slate-500 font-medium">
+          Active {lastSeenText || "Offline"}
         </span>
       )}
     </div>
   </div>
 </button>
-
 
           );
         })}
