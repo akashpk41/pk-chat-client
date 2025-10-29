@@ -44,17 +44,16 @@ export const useChatStore = create((set, get) => ({
 
     // Create optimistic message
     const optimisticMessage = {
-      _id: `temp-${Date.now()}`, // Temporary ID
+      _id: `temp-${Date.now()}`,
       tempId: `temp-${Date.now()}`,
       senderId: authUser._id,
       receiverId: selectedUser._id,
       text: messageData.text,
       image: messageData.image,
       createdAt: new Date().toISOString(),
-      status: "pending", // Mark as pending
+      status: "pending",
     };
 
-    // Add message to UI immediately (optimistic update)
     set({ messages: [...messages, optimisticMessage] });
 
     try {
@@ -63,21 +62,84 @@ export const useChatStore = create((set, get) => ({
         messageData
       );
 
-      // Replace optimistic message with real message from server
       set({
         messages: messages
           .filter((msg) => msg.tempId !== optimisticMessage.tempId)
           .concat(data),
       });
     } catch (err) {
-      // Remove optimistic message on error
       set({
         messages: messages.filter(
           (msg) => msg.tempId !== optimisticMessage.tempId
         ),
       });
       toast.error(err.response?.data?.message || "Failed to send message");
-      throw err; // Re-throw to handle in component
+      throw err;
+    }
+  },
+
+  editMessage: async (messageId, newText) => {
+    const { messages } = get();
+
+    // Optimistic update
+    const updatedMessages = messages.map((msg) =>
+      msg._id === messageId
+        ? { ...msg, text: newText, edited: true, editedAt: new Date().toISOString() }
+        : msg
+    );
+    set({ messages: updatedMessages });
+
+    try {
+      const { data } = await axiosInstance.put(`/messages/edit/${messageId}`, {
+        text: newText,
+      });
+
+      // Update with server response
+      set({
+        messages: messages.map((msg) =>
+          msg._id === messageId ? data : msg
+        ),
+      });
+
+      toast.success("Message edited successfully");
+    } catch (err) {
+      // Revert on error
+      set({ messages });
+      toast.error(err.response?.data?.message || "Failed to edit message");
+      throw err;
+    }
+  },
+
+  // ✅ Delete Message Function
+  deleteMessage: async (messageId) => {
+    const { messages } = get();
+    const authUser = useAuthStore.getState().authUser;
+
+    // Find the message to get sender info
+    const messageToDelete = messages.find(msg => msg._id === messageId);
+
+    // Optimistic update - mark as deleted with sender name
+    const updatedMessages = messages.map((msg) =>
+      msg._id === messageId
+        ? {
+            ...msg,
+            deleted: true,
+            deletedBy: authUser.fullName,
+            text: `${authUser.fullName} deleted this message`,
+            image: null
+          }
+        : msg
+    );
+    set({ messages: updatedMessages });
+
+    try {
+      await axiosInstance.delete(`/messages/delete/${messageId}`);
+      toast.success("Message deleted successfully");
+    } catch (err) {
+      // Revert on error
+      set({ messages });
+      toast.error(err.response?.data?.message || "Failed to delete message");
+      throw err;
     }
   },
 
@@ -96,17 +158,48 @@ export const useChatStore = create((set, get) => ({
         messages: [...get().messages, newMessage],
       });
     });
+
+    // ✅ Listen for message edited
+    socket.on("messageEdited", (editedMessage) => {
+      const { messages } = get();
+      set({
+        messages: messages.map((msg) =>
+          msg._id === editedMessage._id ? editedMessage : msg
+        ),
+      });
+    });
+
+    // ✅ Listen for message deleted
+    socket.on("messageDeleted", (messageId) => {
+      const { messages } = get();
+      const authUser = useAuthStore.getState().authUser;
+
+      set({
+        messages: messages.map((msg) =>
+          msg._id === messageId
+            ? {
+                ...msg,
+                deleted: true,
+                deletedBy: selectedUser.fullName,
+                text: `${selectedUser.fullName} deleted this message`,
+                image: null
+              }
+            : msg
+        ),
+      });
+    });
   },
 
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("newMessage");
+    socket.off("messageEdited");
+    socket.off("messageDeleted");
   },
 
   setSelectedUser: (selectedUser) => {
     set({ selectedUser });
 
-    // Clear unread messages for this user when chat is opened
     const { unreadMessages } = get();
     if (selectedUser && unreadMessages[selectedUser._id]) {
       const newUnreadMessages = { ...unreadMessages };
@@ -115,7 +208,6 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  // Clear unread for specific user
   clearUnreadMessages: (userId) => {
     const { unreadMessages } = get();
     const newUnreadMessages = { ...unreadMessages };

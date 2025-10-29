@@ -5,8 +5,14 @@ import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = () => {
-  const { getUsers, users, selectedUser, isUserLoading, setSelectedUser, unreadMessages } =
-    useChatStore();
+  const {
+    getUsers,
+    users,
+    selectedUser,
+    isUserLoading,
+    setSelectedUser,
+    unreadMessages,
+  } = useChatStore();
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [lastSeenTexts, setLastSeenTexts] = useState({});
@@ -94,16 +100,19 @@ const Sidebar = () => {
   });
 
   // Calculate total unread count
-  const totalUnread = Object.values(unreadMessages || {}).reduce((sum, count) => sum + count, 0);
+  const totalUnread = Object.values(unreadMessages || {}).reduce(
+    (sum, count) => sum + count,
+    0
+  );
 
   if (isUserLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-20 md:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       {/* Header */}
       <div className="border-b border-base-300 w-full p-5">
         {/* Mobile Layout */}
-        <div className="lg:hidden flex flex-col items-center gap-2">
+        <div className="md:hidden flex flex-col items-center gap-2">
           <div className="relative">
             <Users className="size-6" />
             {totalUnread > 0 && (
@@ -112,7 +121,9 @@ const Sidebar = () => {
               </span>
             )}
           </div>
-          <span className="text-xs text-zinc-500">({onlineUsers.length - 1})</span>
+          <span className="text-xs text-zinc-500">
+            ({onlineUsers.length - 1})
+          </span>
 
           {/* Filter Toggle for Mobile */}
           <label className="cursor-pointer flex flex-col items-center gap-1">
@@ -127,7 +138,7 @@ const Sidebar = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden lg:block">
+        <div className="hidden md:block">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Users className="size-6" />
@@ -169,138 +180,143 @@ const Sidebar = () => {
           const isSelected = selectedUser?._id === user._id;
 
           return (
-        <button
-  key={user._id}
-  onClick={() => setSelectedUser(user)}
-  className={`
+            <button
+              key={user._id}
+              onClick={() => setSelectedUser(user)}
+              className={`
     w-full py-3 flex cursor-pointer items-center gap-3
     hover:bg-base-300 transition-colors
   `}
->
-  <div className="relative mx-auto lg:mx-0">
-    {/* Avatar with premium gradient ring for selected */}
-   <div
-  className={`
+            >
+              <div className="relative mx-auto md:mx-0">
+                {/* Avatar with premium gradient ring for selected */}
+                <div
+                  className={`
     size-12 rounded-full overflow-hidden relative
     ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
-    ${isSelected ? "ring-4 ring-offset-2 ring-offset-green-100 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-[3px]" : ""}
+    ${
+      isSelected
+        ? "ring-4 ring-offset-2 ring-offset-green-100 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-[3px]"
+        : ""
+    }
   `}
->
-  <img
-    src={user.profilePic || "/avatar.png"}
-    alt={user.fullName}
-    className={`w-full h-full object-cover rounded-full ${isSelected ? "ring-2 ring-base-100" : ""}`}
-  />
-</div>
-    {/* Online status with blink effect */}
-    {isOnline && (
-      <span className="absolute -bottom-1 right-0 size-3.5 rounded-full ring-2 ring-base-100">
-        <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
-        <span className="relative inline-flex rounded-full h-full w-full bg-green-500"></span>
-      </span>
-    )}
+                >
+                  <img
+                    src={user.profilePic || "/avatar.png"}
+                    alt={user.fullName}
+                    className={`w-full h-full object-cover rounded-full ${
+                      isSelected ? "ring-2 ring-base-100" : ""
+                    }`}
+                  />
+                </div>
+                {/* Online status with blink effect */}
+                {isOnline && (
+                  <span className="absolute -bottom-1 right-0 size-3.5 rounded-full ring-2 ring-base-100">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                    <span className="relative inline-flex rounded-full h-full w-full bg-green-500"></span>
+                  </span>
+                )}
 
-    {/* Mobile version badges */}
-    <div className="lg:hidden">
-      {unreadCount > 0 ? (
-        <span
-          className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
+                {/* Mobile version badges */}
+                <div className="md:hidden">
+                  {unreadCount > 0 ? (
+                    <span
+                      className="absolute -top-1 -right-1 bg-primary text-white text-[10px]
           px-1.5 py-0.5 rounded-full font-bold min-w-[20px] text-center shadow-lg"
-        >
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </span>
-      ) : (
-        !isOnline &&
-        lastSeenText && (
-          <span
-            className="absolute -bottom-1 -right-1 bg-primary text-white text-[9px]
+                    >
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  ) : (
+                    !isOnline &&
+                    lastSeenText && (
+                      <span
+                        className="absolute -bottom-1 -right-1 bg-primary text-white text-[9px]
             px-1.5 py-0.5 rounded-full font-medium"
-          >
-            {lastSeenText.replace(" ago", "")}
-          </span>
-        )
-      )}
-    </div>
-  </div>
+                      >
+                        {lastSeenText.replace(" ago", "")}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
 
-  {/* User info */}
-  <div className="hidden lg:block text-left min-w-0 flex-1">
-    <div className="flex items-center justify-between gap-2 mb-1">
-      <div className="flex items-center gap-1.5 min-w-0">
-        <span
-          className={`truncate bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${
-            unreadCount > 0 ? "font-bold" : "font-semibold"
-          }`}
-        >
-          {user.fullName}
-        </span>
-        {/* Premium Verify Badge */}
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="drop-shadow-md flex-shrink-0"
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="11"
-            fill="url(#userVerify-{user._id})"
-          />
-          <path
-            d="M8 12.5l2.5 2.5L16 9"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <defs>
-            <linearGradient
-              id="userVerify-{user._id}"
-              x1="0"
-              y1="0"
-              x2="24"
-              y2="24"
-            >
-              <stop offset="0%" stopColor="#0088ff" />
-              <stop offset="100%" stopColor="#0066ff" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+              {/* User info */}
+              <div className="hidden md:block text-left min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span
+                      className={`truncate bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent ${
+                        unreadCount > 0 ? "font-bold" : "font-semibold"
+                      }`}
+                    >
+                      {user.fullName}
+                    </span>
+                    {/* Premium Verify Badge */}
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="drop-shadow-md flex-shrink-0"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="11"
+                        fill="url(#userVerify-{user._id})"
+                      />
+                      <path
+                        d="M8 12.5l2.5 2.5L16 9"
+                        stroke="white"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="userVerify-{user._id}"
+                          x1="0"
+                          y1="0"
+                          x2="24"
+                          y2="24"
+                        >
+                          <stop offset="0%" stopColor="#0088ff" />
+                          <stop offset="100%" stopColor="#0066ff" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
 
-      {/* Desktop: Unread count badge */}
-      {unreadCount > 0 && (
-        <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0 shadow-sm">
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </span>
-      )}
-    </div>
+                  {/* Desktop: Unread count badge */}
+                  {unreadCount > 0 && (
+                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full font-bold min-w-[24px] text-center flex-shrink-0 shadow-sm">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </div>
 
-    <div className="text-sm relative">
-      {isOnline ? (
-        <span className="text-green-500 font-medium flex items-center gap-1.5">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          Active now
-        </span>
-      ) : (
-        <span className="text-slate-500 font-medium">
-          Active {lastSeenText || "Offline"}
-        </span>
-      )}
-    </div>
-  </div>
-</button>
-
+                <div className="text-sm relative">
+                  {isOnline ? (
+                    <span className="text-green-500 font-medium flex items-center gap-1.5">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      </span>
+                      Active now
+                    </span>
+                  ) : (
+                    <span className="text-slate-500 font-medium">
+                      Active {lastSeenText || "Offline"}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </button>
           );
         })}
 
         {sortedUsers.length === 0 && (
-          <div className="text-center text-zinc-500 py-4 text-sm lg:text-base">
+          <div className="text-center text-zinc-500 py-4 text-sm md:text-base">
             No {showOnlineOnly ? "Online" : ""} Users
           </div>
         )}
