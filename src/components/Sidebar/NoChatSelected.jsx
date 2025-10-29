@@ -157,7 +157,7 @@ const NoChatSelected = () => {
             style={{ animationDuration: "4s" }}
           >
             <p className=" text-blue-600 font-medium text-center">
-              Select a Conversation From The Sidebar To Start Chatting
+             ✨ Select a Conversation From The Sidebar To Start Chatting
             </p>
           </div>
         </div>
@@ -170,7 +170,7 @@ const NoChatSelected = () => {
           <div className="inline-block px-1 py-3 rounded-xl bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 border-2 border-purple-500/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
             <p className="text-base font-semibold  ">
               <span className="text-purple-700">
-                💡 Visit Your{" "}
+                💡 Visit{" "}
                 <Link
                   to="/profile"
                   className="underline font-bold hover:text-purple-900"

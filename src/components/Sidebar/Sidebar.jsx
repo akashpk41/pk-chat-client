@@ -248,7 +248,7 @@ const Sidebar = () => {
         <span className="text-green-500 font-medium">● Active now</span>
       ) : (
         <span className="text-secondary">
-          {lastSeenText || "Offline"}
+        Active  {lastSeenText || "Offline"}
         </span>
       )}
     </div>
