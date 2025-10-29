@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-    <div data-theme={theme}className="min-h-screen bg-base-100 text-base-content transition-colors duration-300">
+    <div data-theme={theme}className="min-h-screen  bg-base-100 text-base-content transition-colors duration-300">
       <Navbar />
       <Routes>
         <Route

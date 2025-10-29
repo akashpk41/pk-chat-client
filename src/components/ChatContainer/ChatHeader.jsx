@@ -3,6 +3,7 @@ import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useEffect, useState } from "react";
 import { formatLastSeen } from "../../lib/formatLastSeen";
+import ChatHeaderSkeleton from "../skeletons/ChatHeaderSkeleton";
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
