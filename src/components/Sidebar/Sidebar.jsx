@@ -5,14 +5,8 @@ import { useChatStore } from "../../store/useChatStore";
 import { useAuthStore } from "../../store/useAuthStore";
 
 const Sidebar = () => {
-  const {
-    getUsers,
-    users,
-    selectedUser,
-    isUserLoading,
-    setSelectedUser,
-    unreadMessages,
-  } = useChatStore();
+  const { getUsers, users, selectedUser, isUserLoading, setSelectedUser, unreadMessages } =
+    useChatStore();
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [lastSeenTexts, setLastSeenTexts] = useState({});
@@ -67,20 +61,49 @@ const Sidebar = () => {
     ? users.filter((user) => onlineUsers.includes(user._id))
     : users;
 
+  // Sort users by activity: Unread > Online > Recently Active > Others
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    const aIsOnline = onlineUsers.includes(a._id);
+    const bIsOnline = onlineUsers.includes(b._id);
+    const aUnread = unreadMessages?.[a._id] || 0;
+    const bUnread = unreadMessages?.[b._id] || 0;
+
+    // Priority 1: Users with unread messages come first
+    if (aUnread > 0 && bUnread === 0) return -1;
+    if (bUnread > 0 && aUnread === 0) return 1;
+
+    // Priority 2: Both have unread - sort by unread count (higher first)
+    if (aUnread > 0 && bUnread > 0) {
+      return bUnread - aUnread;
+    }
+
+    // Priority 3: Online users before offline
+    if (aIsOnline && !bIsOnline) return -1;
+    if (bIsOnline && !aIsOnline) return 1;
+
+    // Priority 4: Both online - sort by name
+    if (aIsOnline && bIsOnline) {
+      return a.fullName.localeCompare(b.fullName);
+    }
+
+    // Priority 5: Both offline - sort by last seen time (most recent first)
+    const aLastSeen = a.lastSeen ? new Date(a.lastSeen).getTime() : 0;
+    const bLastSeen = b.lastSeen ? new Date(b.lastSeen).getTime() : 0;
+
+    return bLastSeen - aLastSeen; // Descending order (newest first)
+  });
+
   // Calculate total unread count
-  const totalUnread = Object.values(unreadMessages || {}).reduce(
-    (sum, count) => sum + count,
-    0
-  );
+  const totalUnread = Object.values(unreadMessages || {}).reduce((sum, count) => sum + count, 0);
 
   if (isUserLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 md:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       {/* Header */}
       <div className="border-b border-base-300 w-full p-5">
         {/* Mobile Layout */}
-        <div className="md:hidden flex flex-col items-center gap-2">
+        <div className="lg:hidden flex flex-col items-center gap-2">
           <div className="relative">
             <Users className="size-6" />
             {totalUnread > 0 && (
@@ -89,9 +112,7 @@ const Sidebar = () => {
               </span>
             )}
           </div>
-          <span className="text-xs text-zinc-500">
-            ({onlineUsers.length - 1})
-          </span>
+          <span className="text-xs text-zinc-500">({onlineUsers.length - 1})</span>
 
           {/* Filter Toggle for Mobile */}
           <label className="cursor-pointer flex flex-col items-center gap-1">
@@ -106,7 +127,7 @@ const Sidebar = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Users className="size-6" />
@@ -141,7 +162,7 @@ const Sidebar = () => {
       </div>
 
       <div className="overflow-y-auto w-full py-3">
-        {filteredUsers.map((user) => {
+        {sortedUsers.map((user) => {
           const isOnline = onlineUsers.includes(user._id);
           const lastSeenText = lastSeenTexts[user._id];
           const unreadCount = unreadMessages?.[user._id] || 0;
@@ -152,19 +173,17 @@ const Sidebar = () => {
               key={user._id}
               onClick={() => setSelectedUser(user)}
               className={`
-                w-full py-3 cursor-pointer flex items-center gap-3
+                w-full py-3 flex items-center gap-3
                 hover:bg-base-300 transition-colors
                 ${isSelected ? "bg-base-300 ring-1 ring-primary/20" : ""}
               `}
             >
-              <div className="relative mx-auto md:mx-0">
+              <div className="relative mx-auto lg:mx-0">
                 {/* Avatar with special ring for unread messages */}
-                <div
-                  className={`
+                <div className={`
                   size-12 rounded-full overflow-hidden
                   ${unreadCount > 0 ? "ring-2 ring-primary" : ""}
-                `}
-                >
+                `}>
                   <img
                     src={user.profilePic || "/avatar.png"}
                     alt={user.fullName}
@@ -181,7 +200,7 @@ const Sidebar = () => {
                 )}
 
                 {/* Mobile version badges */}
-                <div className="md:hidden">
+                <div className="lg:hidden">
                   {unreadCount > 0 ? (
                     // Unread count badge - top right (priority over last seen)
                     <span
@@ -192,13 +211,12 @@ const Sidebar = () => {
                     </span>
                   ) : (
                     // Last seen badge - only if offline AND no unread messages
-                    !isOnline &&
-                    lastSeenText && (
+                    !isOnline && lastSeenText && (
                       <span
                         className="absolute -bottom-1 -right-1 bg-zinc-600 text-white text-[9px]
                         px-1.5 py-0.5 rounded-full font-medium"
                       >
-                        {lastSeenText.replace(" ago", "")}
+                        {lastSeenText.replace(' ago', '')}
                       </span>
                     )
                   )}
@@ -209,13 +227,9 @@ const Sidebar = () => {
               </div>
 
               {/* User info - only visible on larger screens */}
-              <div className="hidden md:block text-left min-w-0 flex-1">
+              <div className="hidden lg:block text-left min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2 mb-1">
-                  <div
-                    className={`truncate ${
-                      unreadCount > 0 ? "font-bold" : "font-medium"
-                    }`}
-                  >
+                  <div className={`truncate ${unreadCount > 0 ? "font-bold" : "font-medium"}`}>
                     {user.fullName}
                   </div>
                   {/* Desktop: Unread count badge */}
@@ -227,12 +241,10 @@ const Sidebar = () => {
                 </div>
                 <div className="text-sm">
                   {isOnline ? (
-                    <span className="text-green-500 font-medium">
-                      ● Active now
-                    </span>
+                    <span className="text-green-500 font-medium">● Active now</span>
                   ) : (
                     <span className="text-zinc-400">
-                      Active {lastSeenText || "Offline"}
+                      {lastSeenText || "Offline"}
                     </span>
                   )}
                 </div>
@@ -241,9 +253,9 @@ const Sidebar = () => {
           );
         })}
 
-        {filteredUsers.length === 0 && (
-          <div className="text-center text-zinc-500 py-4 text-sm md:text-base">
-            No {showOnlineOnly ? "online" : ""} users
+        {sortedUsers.length === 0 && (
+          <div className="text-center text-zinc-500 py-4 text-sm lg:text-base">
+            No {showOnlineOnly ? "Online" : ""} Users
           </div>
         )}
       </div>

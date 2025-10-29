@@ -265,11 +265,11 @@ const ChatContainer = () => {
 {/* Empty Chat State - First Time Conversation */}
         {messages.length === 0 && !isMessageLoading && (
           <div className="flex flex-col items-center justify-center h-full space-y-4 px-2">
-            <div className="size-20 rounded-full border-4 border-primary overflow-hidden flex-shrink-0">
+            <div className="size-32 rounded-full border-4 border-primary overflow-hidden flex-shrink-0">
               <img
                 src={selectedUser.profilePic || "/avatar.png"}
                 alt="profile pic"
-                className="w-52 h-full object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="text-center space-y-2">
