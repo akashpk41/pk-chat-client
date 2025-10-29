@@ -310,7 +310,7 @@ const ChatContainer = () => {
             </div>
 
             <div className="text-center space-y-3 max-w-md">
-              <h3 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <h3 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {selectedUser.fullName}
               </h3>
 
