@@ -176,74 +176,86 @@ const MessageInput = () => {
       }
     };
   }, [selectedUser]);
-
-  return (
-    <div className="p-4 w-full">
-      {imagePreview && (
-        <div className="mb-3 flex items-center gap-2">
-          <div className="relative">
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
-            />
-            <button
-              onClick={handleRemoveImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
-                flex items-center justify-center"
-              type="button"
-            >
-              <X className="size-3 cursor-pointer" />
-            </button>
-          </div>
-        </div>
-      )}
-      <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
-          <input
-            type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
-            value={text}
-            ref={textInputRef}
-            onChange={(e) => {
-              setText(e.target.value);
-              handleTyping();
-            }}
-            disabled={isSending}
+return (
+  <div className="p-1 py-4 w-full border-t border-base-300 bg-base-100">
+    {imagePreview && (
+      <div className="mb-3 flex items-center gap-2 animate-in slide-in-from-bottom duration-200">
+        <div className="relative group">
+          <img
+            src={imagePreview}
+            alt="Preview"
+            className="w-20 h-20 object-cover rounded-xl border-2 border-primary/30 shadow-lg ring-2 ring-primary/10"
           />
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageChange}
-          />
-
           <button
+            onClick={handleRemoveImage}
+            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-error text-error-content
+              flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
             type="button"
-            className={`sm:flex btn btn-circle
-                ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isSending}
           >
-            <Image size={20} />
+            <X className="size-4" />
           </button>
         </div>
-        <button
-          type="submit"
-          className="btn btn-sm btn-circle"
-          disabled={(!text.trim() && !imagePreview) || isSending}
-        >
-          {isSending ? (
-            <span className="loading loading-spinner loading-xs"></span>
-          ) : (
-            <Send size={22} />
-          )}
-        </button>
-      </form>
-    </div>
-  );
+      </div>
+    )}
+
+    <form onSubmit={handleSendMessage} className="flex items-center gap-3">
+      <div className="flex-1 relative">
+        <input
+          type="text"
+          className="w-full input input-bordered rounded-2xl input-md bg-base-200
+            border-2 border-base-300 focus:border-primary focus:outline-none
+            transition-all duration-200 pr-4 pl-4 py-3
+            placeholder:text-base-content/50"
+          placeholder="Type a message..."
+          value={text}
+          ref={textInputRef}
+          onChange={(e) => {
+            setText(e.target.value);
+            handleTyping();
+          }}
+          disabled={isSending}
+        />
+      </div>
+
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleImageChange}
+      />
+
+      <button
+        type="button"
+        className={`btn btn-circle btn-md border-2 transition-all duration-200
+          ${imagePreview
+            ? "bg-success/20 border-success text-success hover:bg-success hover:text-success-content"
+            : "bg-base-200 border-base-300 text-base-content/60 hover:border-primary hover:text-primary"
+          }`}
+        onClick={() => fileInputRef.current?.click()}
+        disabled={isSending}
+      >
+        <Image size={20} />
+      </button>
+
+      <button
+        type="submit"
+        className={`btn btn-circle btn-md transition-all duration-200
+          ${(!text.trim() && !imagePreview) || isSending
+            ? "bg-base-200 border-2 border-base-300 text-base-content/40"
+            : "bg-primary border-2 border-primary text-primary-content hover:scale-105 shadow-lg shadow-primary/30"
+          }`}
+        disabled={(!text.trim() && !imagePreview) || isSending}
+      >
+        {isSending ? (
+          <span className="loading loading-spinner loading-sm"></span>
+        ) : (
+          <Send size={20} />
+        )}
+      </button>
+    </form>
+  </div>
+);
 };
 
 export default MessageInput;

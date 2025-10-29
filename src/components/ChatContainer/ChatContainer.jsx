@@ -5,7 +5,7 @@ import MessageInput from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useAuthStore } from "../../store/useAuthStore";
 import { formatMessageTime, getRelativeTime } from "../../lib/formateTime";
-import { Check, CheckCheck, Clock } from "lucide-react";
+import { Check, CheckCheck, Clock, X } from "lucide-react";
 
 const ChatContainer = () => {
   const {
@@ -31,6 +31,7 @@ const ChatContainer = () => {
   const alreadyMarkedSeenRef = useRef(new Set());
   const audioContextRef = useRef(null);
   const [showRelativeTime, setShowRelativeTime] = useState({});
+  const [selectedImage, setSelectedImage] = useState(null);
 
   console.log("Message Loading", isMessageLoading);
 
@@ -255,76 +256,60 @@ const ChatContainer = () => {
   const isSelectedUserTyping = typingUserId === selectedUser?._id;
 
   return (
-    <div className="flex flex-col z flex-1 overflow-auto">
+    <div className="flex flex-col flex-1 overflow-auto">
       <ChatHeader />
 
-
-
-      <div className="flex-1 overflow-y-auto px-2 py-4 space-y-4">
-
-{/* Empty Chat State - First Time Conversation */}
+      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-4">
+        {/* Empty Chat State - First Time Conversation */}
         {messages.length === 0 && !isMessageLoading && (
-          <div className="flex flex-col items-center h-full space-y-4 px-2">
-  <div className="size-38 rounded-full border-4 border-blue-500 overflow-hidden flex-shrink-0 shadow-lg shadow-blue-500/30">
-    <img
-      src={selectedUser.profilePic || "/avatar.png"}
-      alt="profile pic"
-      className="w-full h-full object-cover"
-    />
-  </div>
-  <div className="text-center space-y-2">
-    <div className="flex items-center justify-center gap-2">
-      <h3 className="text-3xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-        {selectedUser.fullName}
-      </h3>
-      {/* Premium Verify Badge */}
-      <div className="relative inline-flex">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          className="drop-shadow-lg"
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="11"
-            fill="url(#blueGradient)"
-          />
-          <path
-            d="M8 12.5l2.5 2.5L16 9"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <defs>
-            <linearGradient
-              id="blueGradient"
-              x1="0"
-              y1="0"
-              x2="24"
-              y2="24"
-            >
-              <stop offset="0%" stopColor="#0088ff" />
-              <stop offset="100%" stopColor="#0066ff" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+        <div className="flex flex-col items-center mt-6 h-full space-y-2 px-2">
+  <div className="relative inline-block">
+    <div className="size-40 rounded-full border-4 border-primary/30 overflow-hidden shadow-2xl shadow-primary/20 ring-4 ring-primary/10">
+      <img
+        src={selectedUser.profilePic || "/avatar.png"}
+        alt="profile pic"
+        className="w-full h-full object-cover"
+      />
     </div>
-    <p className="text-base-content/70 font-medium">
-      You're now connected on chat
+    {/* Blue Verify Badge on Image */}
+    <div className="absolute bottom-3 right-3">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="drop-shadow-xl">
+        <circle cx="12" cy="12" r="11" fill="url(#blueGradient)" />
+        <path d="M8 12.5l2.5 2.5L16 9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <defs>
+          <linearGradient id="blueGradient" x1="0" y1="0" x2="24" y2="24">
+            <stop offset="0%" stopColor="#0088ff" />
+            <stop offset="100%" stopColor="#0066ff" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div className="text-center space-y-3 max-w-md">
+    <h3 className="text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      {selectedUser.fullName}
+    </h3>
+
+    <div className="badge badge-primary badge-lg gap-2 px-4 py-3">
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+        <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+      </svg>
+      Connected on Chat
+    </div>
+
+    <p className="text-base-content/70 text-lg font-medium">
+      Start your conversation now
     </p>
-    <p className="text-sm text-base-content/60 max-w-sm flex items-center justify-center gap-1.5">
-      Say hi to start the conversation
-      <span className="inline-block animate-bounce">👋</span>
-    </p>
+
+    <div className="flex items-center justify-center gap-2 text-sm text-base-content/60">
+      <span>Say hi to break the ice</span>
+      <span className="text-2xl animate-bounce">👋</span>
+    </div>
   </div>
 </div>
         )}
-
 
         {messages.map((message) => {
           const messageStatus = getMessageStatus(message);
@@ -334,154 +319,175 @@ const ChatContainer = () => {
           return (
             <div
               key={message._id || message.tempId || Math.random()}
-              className={`flex ${isSentByMe ? "justify-end" : "justify-start"}`}
+              className={`flex items-end gap-2 ${isSentByMe ? "justify-end" : "justify-start"}`}
             >
-              <div className="flex items-end gap-2 max-w-[80%]">
-                {/* Avatar - left side for received messages */}
-                {!isSentByMe && (
-                  <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
-                    <img
-                      src={selectedUser.profilePic || "/avatar.png"}
-                      alt="profile pic"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+              {/* Avatar - left side for received messages */}
+              {!isSentByMe && (
+                <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-base-300 shadow-md">
+                  <img
+                    src={selectedUser.profilePic || "/avatar.png"}
+                    alt="profile pic"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
 
-                <div className="flex flex-col">
-                  <p
-                    className={`
-                      text-[13px] mb-1 px-2
-                      ${
-                        isSentByMe
-                          ? "text-right text-base-content/50"
-                          : "text-left text-base-content/50"
-                      }
-                    `}
-                  >
-                    {formatMessageTime(message.createdAt)}
-                  </p>
+              <div className={`flex flex-col max-w-[75%] sm:max-w-[60%] ${isSentByMe ? "items-end" : "items-start"}`}>
+                {/* Timestamp */}
+                <p className={`text-xs mb-1.5 px-2 text-base-content/50 font-medium`}>
+                  {formatMessageTime(message.createdAt)}
+                </p>
 
-                  {/* Message bubble */}
-                  <div
-                    className={`
-                      rounded-xl shadow-sm cursor-pointer relative
-                      ${message.image && !message.text ? "p-1" : "p-3"}
-                      ${
-                        isSentByMe
-                          ? "bg-primary text-primary-content"
-                          : "bg-base-200"
-                      }
-                    `}
-                    onClick={() =>
-                      setShowRelativeTime((prev) => ({
-                        ...prev,
-                        [message._id]: !prev[message._id],
-                      }))
+                {/* Message bubble */}
+                <div
+                  className={`
+                    group relative rounded-2xl shadow-lg transition-all duration-200 hover:shadow-xl
+                    ${message.image && !message.text ? "p-1" : "px-4 py-2.5"}
+                    ${
+                      isSentByMe
+                        ? "bg-primary text-primary-content rounded-br-md"
+                        : "bg-base-200 text-base-content rounded-bl-md"
                     }
-                  >
-                    {message.image && (
+                  `}
+                  onClick={() =>
+                    setShowRelativeTime((prev) => ({
+                      ...prev,
+                      [message._id]: !prev[message._id],
+                    }))
+                  }
+                >
+                  {message.image && (
+                    <div className="relative overflow-hidden rounded-xl">
                       <img
                         src={message.image}
                         alt="Attachment"
-                        className={`sm:max-w-[200px] rounded-md ${
-                          message.text ? "mb-2" : "rounded-lg"
+                        className={`max-w-[200px] sm:max-w-[320px] rounded-xl cursor-pointer transition-transform hover:scale-[1.02] ${
+                          message.text ? "mb-2" : ""
                         }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage(message.image);
+                        }}
                       />
-                    )}
-                    {message.text && <p className="text-sm">{message.text}</p>}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl" />
+                    </div>
+                  )}
 
-                    {/* Message Status Indicator (only for sent messages) */}
-                    {isSentByMe && (
-                      <div
-                        className={`flex items-center justify-start gap-1 ${
-                          message.text
-                            ? "mt-1"
-                            : "absolute bottom-1 right-1 bg-black/30 rounded-full px-1.5 py-0.5"
-                        }`}
-                      >
-                        {messageStatus === "pending" ? (
-                          // Pending - Clock icon
-                          <Clock className="w-3 h-3 opacity-60" />
-                        ) : messageSeen ? (
-                          // Seen - show receiver's profile pic
-                          <div className="size-5 rounded-full overflow-hidden border-2 border-success flex-shrink-0">
-                            <img
-                              src={selectedUser.profilePic || "/avatar.png"}
-                              alt="seen"
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ) : (
-                          // Sent but not seen - show double check
-                          <CheckCheck className="w-3.5 h-3.5 opacity-70" />
-                        )}
-                      </div>
-                    )}
+                  {message.text && (
+                    <p className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
+                      {message.text}
+                    </p>
+                  )}
 
-                    {showRelativeTime[message._id] && (
-                      <span
-                        className={`
-                          text-xs block mt-2 pt-1 border-t
-                          ${
-                            isSentByMe
-                              ? "text-primary-content/60 border-primary-content/20"
-                              : "text-base-content/60 border-base-content/20"
-                          }
-                        `}
-                      >
-                        {getRelativeTime(message.createdAt)}
-                      </span>
-                    )}
-                  </div>
+                  {/* Message Status Indicator (only for sent messages) */}
+                  {isSentByMe && (
+                    <div
+                      className={`flex items-center justify-start gap-1 ${
+                        message.text
+                          ? "mt-1"
+                          : "absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm rounded-full px-2 py-1"
+                      }`}
+                    >
+                      {messageStatus === "pending" ? (
+                        <Clock className="w-3.5 h-3.5 opacity-70 animate-pulse" />
+                      ) : messageSeen ? (
+                        <div className="size-4 rounded-full overflow-hidden border border-success flex-shrink-0  shadow-sm">
+                          <img
+                            src={selectedUser.profilePic || "/avatar.png"}
+                            alt="seen"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <CheckCheck className="w-4 h-4 opacity-80" />
+                      )}
+                    </div>
+                  )}
+
+                  {showRelativeTime[message._id] && (
+                    <div
+                      className={`
+                        text-xs mt-2 pt-2 border-t font-medium
+                        ${
+                          isSentByMe
+                            ? "text-primary-content/70 border-primary-content/30"
+                            : "text-base-content/70 border-base-content/30"
+                        }
+                      `}
+                    >
+                      {getRelativeTime(message.createdAt)}
+                    </div>
+                  )}
                 </div>
-
-                {/* Avatar - right side for sent messages */}
-                {isSentByMe && (
-                  <div className="size-10 rounded-full border overflow-hidden flex-shrink-0">
-                    <img
-                      src={authUser.profilePic || "/avatar.png"}
-                      alt="profile pic"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
               </div>
+
+              {/* Avatar - right side for sent messages */}
+              {isSentByMe && (
+                <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary/30 shadow-md">
+                  <img
+                    src={authUser.profilePic || "/avatar.png"}
+                    alt="profile pic"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
             </div>
           );
         })}
 
+        {/* Typing Indicator - Only show when selected user is typing */}
+        {isSelectedUserTyping && (
+          <div className="flex items-end gap-2 justify-start">
+            <div className="size-8 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary/30 shadow-md animate-pulse">
+              <img
+                src={selectedUser.profilePic || "/avatar.png"}
+                alt="profile pic"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
+            <div className="flex flex-col items-start">
+              <span className="text-xs font-semibold text-primary px-2 mb-1.5">
+                {selectedUser.fullName} is typing...
+              </span>
+              <div className="bg-base-200 rounded-2xl rounded-bl-md px-5 py-3 shadow-lg">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-secondary animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-accent animate-bounce"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
-
-{/* Typing Indicator - Only show when selected user is typing */}
-{isSelectedUserTyping && (
-  <div className="chat chat-start">
-    <div className="chat-image avatar">
-      <div className="size-10 rounded-full border-2 border-blue-500/30 shadow-md shadow-blue-500/20">
-        <img
-          src={selectedUser.profilePic || "/avatar.png"}
-          alt="profile pic"
-          className="rounded-full"
-        />
-      </div>
-    </div>
-    <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-blue-500 px-3">
-        {selectedUser.fullName} is typing...
-      </span>
-      <div className="chat-bubble bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm">
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-blue-500 animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="w-2 h-2 rounded-full bg-purple-500 animate-bounce [animation-delay:-0.15s]"></div>
-          <div className="w-2 h-2 rounded-full bg-pink-500 animate-bounce"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
         <div ref={messageEndRef} />
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 btn btn-circle btn-ghost text-white hover:bg-white/20"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="max-w-5xl max-h-[90vh] animate-in zoom-in-95 duration-300">
+            <img
+              src={selectedImage}
+              alt="Full size"
+              className="w-full h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
       <MessageInput />
     </div>
   );
