@@ -3,6 +3,9 @@
 > Interactive, real-time chat experience powered by **React, Zustand, Socket.IO, and TailwindCSS**.
 > Built for seamless communication, stunning themes, and instant performance. ⚡
 
+🌐 **Live Website:** [https://pk-chat-z13v.onrender.com/](https://pk-chat-z13v.onrender.com/)
+💻 **Server Repository:** [pk-chat-server](https://github.com/akashpk41/pk-chat-server)
+
 ---
 
 ## ✨ Overall Style
@@ -29,48 +32,55 @@ The frontend of PK Chat handles:
 
 ## 🔮 Core Features
 
-| 🌟 Feature | 💬 Description |
-|------------|----------------|
-| 🔑 **Authentication** | Secure login, signup, and logout integrated with backend JWT |
-| 🗣️ **Real-time Messaging** | Instant message delivery using Socket.IO |
-| 📝 **Edit Messages** | Update messages with live reflection across connected users |
-| 🗑️ **Delete Messages** | Soft delete with “Deleted by” notice |
-| ✍️ **Typing Indicator** | See when the other user is typing |
-| 👁️ **Seen / Delivered Status** | Real-time seen updates |
-| 🎨 **35 DaisyUI Themes** | Instantly switch between light/dark/custom themes |
-| 🧠 **Zustand Global State** | Manage auth, chat & theme seamlessly |
-| ⚡ **Optimistic UI Updates** | Message shows instantly before backend confirmation |
-| 🔔 **Beautiful Toast Alerts** | Feedback for all actions |
-| 📱 **Responsive Layout** | Fully mobile-friendly modern design |
+| 🌟 Feature                     | 💬 Description                                               |
+| ------------------------------ | ------------------------------------------------------------ |
+| 🔑 **Authentication**          | Secure login, signup, and logout integrated with backend JWT |
+| 🗣️ **Real-time Messaging**     | Instant message delivery using Socket.IO                     |
+| 📝 **Edit Messages**           | Update messages with live reflection across connected users  |
+| 🗑️ **Delete Messages**         | Soft delete with “Deleted by” notice                         |
+| ✍️ **Typing Indicator**        | See when the other user is typing                            |
+| 👁️ **Seen / Delivered Status** | Real-time seen updates                                       |
+| 🎨 **35 DaisyUI Themes**       | Instantly switch between light/dark/custom themes            |
+| 🧠 **Zustand Global State**    | Manage auth, chat & theme seamlessly                         |
+| ⚡ **Optimistic UI Updates**   | Message shows instantly before backend confirmation          |
+| 🔔 **Beautiful Toast Alerts**  | Feedback for all actions                                     |
+| 📱 **Responsive Layout**       | Fully mobile-friendly modern design                          |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Description |
-|-------------|-------------|
-| ⚛️ **React 19 (Vite)** | Modern component-based UI framework |
+| Technology                   | Description                             |
+| ---------------------------- | --------------------------------------- |
+| ⚛️ **React 19 (Vite)**       | Modern component-based UI framework     |
 | 💅 **TailwindCSS + DaisyUI** | Utility-first styling with theme system |
-| 🔌 **Socket.IO-client** | Real-time messaging & event handling |
-| 🧠 **Zustand** | Lightweight, powerful state management |
-| 🌍 **React Router 7** | Client-side routing for pages |
-| 🍞 **React Hot Toast** | Stylish notifications and alerts |
-| 🧩 **Axios** | HTTP client for API communication |
-| 🖼️ **Lucide React** | Clean modern icon set |
+| 🔌 **Socket.IO-client**      | Real-time messaging & event handling    |
+| 🧠 **Zustand**               | Lightweight, powerful state management  |
+| 🌍 **React Router 7**        | Client-side routing for pages           |
+| 🍞 **React Hot Toast**       | Stylish notifications and alerts        |
+| 🧩 **Axios**                 | HTTP client for API communication       |
+| 🖼️ **Lucide React**          | Clean modern icon set                   |
 
 ---
 
 ## 📸 Preview / Screenshot Section
 
-| Login Page | Main Chat Interface |
-|-------------|---------------------|
+| Login Page                                                    | Main Chat Interface                                                            |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | ![Login](https://via.placeholder.com/600x350?text=Login+Page) | ![Chat Interface](https://via.placeholder.com/600x350?text=Main+App+Interface) |
 
-| Inbox | Settings | Profile |
-|--------|-----------|----------|
+| Inbox                                                    | Settings                                                       | Profile                                                      |
+| -------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------ |
 | ![Inbox](https://via.placeholder.com/300x200?text=Inbox) | ![Settings](https://via.placeholder.com/300x200?text=Settings) | ![Profile](https://via.placeholder.com/300x200?text=Profile) |
 
-> 🖼️ *You can replace these placeholders with your actual screenshots later.*
+---
+
+## 🤖 AI Involvement (Project Notes)
+
+> During the final stages of this project, I experimented with **Claude AI** to refine certain features and enhance parts of the design.
+> However, while working with AI tools, I encountered several challenges — including inaccurate outputs and moments when I couldn’t fully grasp some implementations.
+> In those cases, I revisited the results, explored the logic in depth, and learned from the AI explanations before applying them manually.
+> This process not only improved the project’s overall quality but also deepened my understanding of **AI-assisted development** and practical frontend design. 💡
 
 ---
 
@@ -79,10 +89,8 @@ The frontend of PK Chat handles:
 **Author:** Akash PK
 **Role:** MERN Stack Developer
 📧 **Email:** [akashpk741@gmail.com](mailto:akashpk741@gmail.com)
-🐙 **GitHub:** [github.com/akashpk41](https://github.com/akashpk41)
 📘 **Facebook:** [facebook.com/atapk41](https://facebook.com/atapk41/)
 
-> ❤️ Built with JavaScript, React, and passion for real-time innovation.
+> ❤️ Built with JavaScript, React, Node, Express, MongoDB and passion for real-time innovation.
 
 ---
-
