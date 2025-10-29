@@ -38,8 +38,8 @@ const ChatHeader = () => {
           </div>
           {/* User info */}
           <div>
-            <h3 className="font-bold text-xl  ">{selectedUser.fullName}</h3>
-            <p className={`text-sm font-semibold  ${isOnline ? "text-green-500" : "text-blue-500"}`}>
+            <h3 className="font-semibold text-xl  ">{selectedUser.fullName}</h3>
+            <p className={`text-sm font-medium  ${isOnline ? "text-green-500" : "text-blue-500"}`}>
               {isOnline ? "Online" : lastSeenText}
             </p>
           </div>
