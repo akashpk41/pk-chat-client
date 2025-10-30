@@ -174,7 +174,7 @@ const NoChatSelected = () => {
         <div className="-mt-2">
           <div className="flex items-center justify-center gap-2">
             <div className="relative">
-              <div className="absolute inset-0 w-2.5 h-2.5 bg-success rounded-full animate-ping opacity-75" />
+              <div className="absolute inset-0 w-2.5 h-2.5 bg-green-500 rounded-full animate-ping opacity-75" />
               <div className="relative w-2.5 h-2.5 bg-success rounded-full shadow-lg" />
             </div>
             <span className="text-xs  text-base-content/70 font-semibold">
