@@ -359,7 +359,7 @@ const ChatContainer = () => {
               <div className={`flex flex-col max-w-[75%] sm:max-w-[60%] ${isSentByMe ? "items-end" : "items-start"}`}>
                 {/* Timestamp */}
                 <p className={`text-xs mb-1.5 px-2 text-base-content/50 font-medium`}>
-                  {formatMessageTime(message.createdAt)}
+                  {getRelativeTime(message.createdAt)}
                 </p>
 
                 {/* Message bubble */}

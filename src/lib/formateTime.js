@@ -18,16 +18,26 @@ export function getRelativeTime(date) {
     return "Just now";
   }
 
-  // Less than 1 hour
+  // Less than 1 hour → show minutes ago
   if (diffInSeconds < 3600) {
     const minutes = Math.floor(diffInSeconds / 60);
     return `${minutes} ${minutes === 1 ? "min" : "mins"} ago`;
   }
 
-  // Less than 24 hours (1 day)
+  // Check if message was yesterday
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+  if (
+    messageDate.getDate() === yesterday.getDate() &&
+    messageDate.getMonth() === yesterday.getMonth() &&
+    messageDate.getFullYear() === yesterday.getFullYear()
+  ) {
+    return `Yesterday at ${formatMessageTime(messageDate)}`;
+  }
+
+  // More than 1 hour but today → show time only
   if (diffInSeconds < 86400) {
-    const hours = Math.floor(diffInSeconds / 3600);
-    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    return formatMessageTime(messageDate);
   }
 
   // Less than 7 days - show day name with time (e.g., "Fri at 10:58 PM")
@@ -35,12 +45,7 @@ export function getRelativeTime(date) {
     const dayName = messageDate.toLocaleDateString("en-US", {
       weekday: "short",
     });
-    const time = messageDate.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-    return `${dayName} at ${time}`;
+    return `${dayName} at ${formatMessageTime(messageDate)}`;
   }
 
   // More than 7 days - show full date with time (e.g., "Oct 28, 2024 at 10:58 AM")
@@ -49,10 +54,5 @@ export function getRelativeTime(date) {
     day: "numeric",
     year: "numeric",
   });
-  const time = messageDate.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-  return `${fullDate} at ${time}`;
+  return `${fullDate} at ${formatMessageTime(messageDate)}`;
 }
