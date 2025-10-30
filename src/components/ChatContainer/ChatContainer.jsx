@@ -457,7 +457,7 @@ const ChatContainer = () => {
                         {messageStatus === "pending" ? (
                           <Clock className="w-3.5 h-3.5 opacity-70 animate-pulse" />
                         ) : messageSeen ? (
-                          <div className="size-4 rounded-full overflow-hidden border border-success flex-shrink-0 shadow-sm">
+                          <div className="size-5 rounded-full overflow-hidden border border-success flex-shrink-0 shadow-sm">
                             <img
                               src={selectedUser.profilePic || "/avatar3.png"}
                               alt="seen"
