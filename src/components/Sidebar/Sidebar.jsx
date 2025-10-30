@@ -235,7 +235,7 @@ const Sidebar = () => {
               ) : (
                 !isOnline &&
                 lastSeenText && (
-                  <span className="absolute -bottom-1 -right-1 bg-base-content text-base-100 text-[11px] px-1.5 py-0.5 rounded-full font-bold">
+                  <span className="absolute -bottom-1 -right-1 bg-base-content text-base-100 text-[9px] px-1.5 py-0.5 rounded-full font-bold">
                     {lastSeenText.replace(" ago", "")}
                   </span>
                 )
