@@ -311,7 +311,7 @@ if (diffInMinutes < 1) {
                 </span>
               ) : (
                 <span className="text-base-content/60 font-medium text-sm">
-                  Active {lastSeenText || "Offline"}
+                  Active {lastSeenText || "Offline"} Ago
                 </span>
               )}
             </div>
