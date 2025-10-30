@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Send, Palette, Eye, Check } from "lucide-react";
+import {
+  Send,
+  Palette,
+  Eye,
+  Check,
+  UserPlus,
+  LogIn,
+  UserCircle,
+  Home,
+  Sparkles,
+} from "lucide-react";
 import { useThemeStore } from "../store/useThemeStore";
 import { THEMES } from "../themes";
 import DeveloperProfile from "../components/DeveloperProfile";
+import { Link } from "react-router";
+import { useAuthStore } from "../store/useAuthStore";
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -16,20 +28,22 @@ const PREVIEW_MESSAGES = [
 const Settings = () => {
   const { theme, setTheme } = useThemeStore();
   const [hoveredTheme, setHoveredTheme] = useState(null);
-
+  const { authUser } = useAuthStore();
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-100 to-base-200">
       <div className="container mx-auto px-1 pt-2 pb-12 max-w-6xl">
-        {/* Header Section */}
-        <div className="mb-8 px-4">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Palette className="w-5 h-5 text-primary" />
+     {/* Header Section */}
+        <div className="mb-10 text-center">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/30 shadow-lg shadow-primary/20">
+              <Sparkles className="w-6 h-6 text-primary" />
             </div>
-            <h1 className="text-3xl font-bold">Settings</h1>
+            <h1 className="text-4xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              Settings
+            </h1>
           </div>
-          <p className="text-base-content/60 ml-13">
-            Customize your chat experience with themes and preferences
+          <p className="text-base text-base-content/70 font-medium">
+            Customize your experience and manage preferences
           </p>
         </div>
 
@@ -212,6 +226,96 @@ const Settings = () => {
         {/* Developer Profile - Full Width Below Preview */}
         <div className="mt-6">
           <DeveloperProfile />
+        </div>
+
+        <div className="mt-8">
+          {authUser ? (
+            // Logged In User - Show Home & Profile
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Link
+                to="/"
+                className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/20">
+                  <Home className="w-6 h-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-base-content">
+                    Go to Home
+                  </h3>
+                  <p className="text-sm text-base-content/60">
+                    Start chatting with friends
+                  </p>
+                </div>
+                <div className="text-primary group-hover:translate-x-1 transition-transform">
+                  →
+                </div>
+              </Link>
+
+              <Link
+                to="/profile"
+                className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-secondary/50 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-secondary/20">
+                  <UserCircle className="w-6 h-6 text-secondary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-base-content">
+                    My Profile
+                  </h3>
+                  <p className="text-sm text-base-content/60">
+                    View and edit your profile
+                  </p>
+                </div>
+                <div className="text-secondary group-hover:translate-x-1 transition-transform">
+                  →
+                </div>
+              </Link>
+            </div>
+          ) : (
+            // Not Logged In - Show Login & Sign Up
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Link
+                to="/login"
+                className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/20">
+                  <LogIn className="w-6 h-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-base-content">
+                    Log In
+                  </h3>
+                  <p className="text-sm text-base-content/60">
+                    Access your account
+                  </p>
+                </div>
+                <div className="text-primary group-hover:translate-x-1 transition-transform">
+                  →
+                </div>
+              </Link>
+
+              <Link
+                to="/signup"
+                className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-secondary/50 hover:shadow-xl transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-secondary/20">
+                  <UserPlus className="w-6 h-6 text-secondary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-base-content">
+                    Create Account
+                  </h3>
+                  <p className="text-sm text-base-content/60">
+                    Join our community
+                  </p>
+                </div>
+                <div className="text-secondary group-hover:translate-x-1 transition-transform">
+                  →
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

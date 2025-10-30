@@ -125,7 +125,7 @@ const DeveloperProfile = () => {
                       title={social.name}
                     >
                       <Icon className="text-3xl" />
-                     
+
                     </a>
                   );
                 })}

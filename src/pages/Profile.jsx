@@ -53,7 +53,7 @@ const Profile = () => {
         <div className="space-y-6">
           {/* Profile Picture Card */}
           <div className="card bg-base-100 shadow-2xl border-2 border-base-300/50 hover:border-primary/30 transition-all duration-300">
-            <div className="card-body p-4">
+            <div className="card-body p-2">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold flex items-center gap-2 text-base-content">
                   <div className="p-2 rounded-lg bg-primary/10">
