@@ -35,23 +35,23 @@ const Sidebar = () => {
             const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
             const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
             const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+if (diffInMinutes < 1) {
+  newTexts[user._id] = "1m"; // Just now → 1m ago
+} else if (diffInMinutes < 60) {
+  newTexts[user._id] = `${diffInMinutes}m`;
+} else if (diffInHours < 24) {
+  newTexts[user._id] = `${diffInHours}h`;
+} else if (diffInDays === 1) {
+  newTexts[user._id] = "Yesterday";
+} else if (diffInDays < 7) {
+  newTexts[user._id] = `${diffInDays}d`;
+} else {
+  newTexts[user._id] = `${diffInDays}d`; // 7+ days হলে দিন সংখ্যা দেখাবে
+}
+} else {
+  newTexts[user._id] = "Offline";
+}
 
-            if (diffInMinutes < 1) {
-              newTexts[user._id] = "Just now";
-            } else if (diffInMinutes < 60) {
-              newTexts[user._id] = `${diffInMinutes}m ago`;
-            } else if (diffInHours < 24) {
-              newTexts[user._id] = `${diffInHours}h ago`;
-            } else if (diffInDays === 1) {
-              newTexts[user._id] = "Yesterday";
-            } else if (diffInDays < 7) {
-              newTexts[user._id] = `${diffInDays}d ago`;
-            } else {
-              newTexts[user._id] = "Long time ago";
-            }
-          } else {
-            newTexts[user._id] = "Offline";
-          }
         }
       });
       setLastSeenTexts(newTexts);
@@ -302,7 +302,7 @@ const Sidebar = () => {
 
             <div className="text-sm relative">
               {isOnline ? (
-                <span className="text-success font-semibold flex items-center gap-1.5">
+                <span className="text-green-500 font-semibold flex items-center gap-1.5">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
@@ -310,7 +310,7 @@ const Sidebar = () => {
                   Active now
                 </span>
               ) : (
-                <span className="text-base-content/60 font-medium text-xs">
+                <span className="text-base-content/60 font-medium text-sm">
                   Active {lastSeenText || "Offline"}
                 </span>
               )}

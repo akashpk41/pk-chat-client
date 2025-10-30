@@ -126,19 +126,19 @@ const NoChatSelected = () => {
         <div className="flex flex-wrap justify-center gap-2 pt-1">
           <div className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary/20 to-primary/10 border-2 border-primary/40 backdrop-blur-sm flex items-center gap-1.5 hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-md hover:border-primary/60 group">
             <MessageSquare className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-            <span className="text-xs font-bold text-primary">
+            <span className="text-sm font-bold text-primary">
               Real-time Chat
             </span>
           </div>
           <div className="px-3 py-2 rounded-lg bg-gradient-to-r from-secondary/20 to-secondary/10 border-2 border-secondary/40 backdrop-blur-sm flex items-center gap-1.5 hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-md hover:border-secondary/60 group">
             <Sparkles className="w-4 h-4 text-secondary group-hover:scale-110 transition-transform" />
-            <span className="text-xs font-bold text-secondary">
+            <span className="text-sm font-bold text-secondary">
               Premium Features
             </span>
           </div>
           <div className="px-3 py-2 rounded-lg bg-gradient-to-r from-accent/20 to-accent/10 border-2 border-accent/40 backdrop-blur-sm flex items-center gap-1.5 hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-md hover:border-accent/60 group">
             <Users className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-            <span className="text-xs font-bold text-accent">
+            <span className="text-sm font-bold text-accent">
               Connect Instantly
             </span>
           </div>
@@ -175,9 +175,9 @@ const NoChatSelected = () => {
           <div className="flex items-center justify-center gap-2">
             <div className="relative">
               <div className="absolute inset-0 w-2.5 h-2.5 bg-green-500 rounded-full animate-ping opacity-75" />
-              <div className="relative w-2.5 h-2.5 bg-success rounded-full shadow-lg" />
+              <div className="relative w-2.5 h-2.5 bg-green-500 rounded-full shadow-lg" />
             </div>
-            <span className="text-xs  text-base-content/70 font-semibold">
+            <span className="text-sm  text-base-content/70 font-semibold">
               Online & Ready to Chat
             </span>
           </div>
