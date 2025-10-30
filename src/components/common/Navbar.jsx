@@ -52,7 +52,9 @@ const Navbar = () => {
                 <h1 className="text-xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   PK Chat
                 </h1>
-                <p className="text-[10px] text-base-content/60 font-medium -mt-1">Stay Connected</p>
+                <p className="text-[10px] text-base-content/60 font-medium -mt-1">
+                  Stay Connected
+                </p>
               </div>
             </Link>
           </div>
@@ -87,18 +89,18 @@ const Navbar = () => {
                       </div>
                     </div>
                   ) : (
-                  <div className="relative">
-  <div className="avatar">
-    <div className="w-10 h-10 rounded-full ring-2 ring-primary/80 group-hover:ring-primary/60 transition-all">
-      <img
-        src="/avatar3.png"
-        alt="default avatar"
-        className="object-cover"
-      />
-    </div>
-  </div>
-  <div className="absolute inset-0 bg-secondary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
-</div>
+                    <div className="relative">
+                      <div className="avatar">
+                        <div className="w-10 h-10 rounded-full ring-2 ring-primary/80 group-hover:ring-primary/60 transition-all">
+                          <img
+                            src="/avatar3.png"
+                            alt="default avatar"
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div className="absolute inset-0 bg-secondary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
                   )}
                   <span className="hidden sm:inline font-medium">Profile</span>
                 </Link>

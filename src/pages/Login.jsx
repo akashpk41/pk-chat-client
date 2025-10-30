@@ -72,7 +72,7 @@ return (
               Welcome <span className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">Back</span>
             </h1>
             <p className="text-base-content/70 text-lg font-medium">
-              Log in to continue your journey
+              Log In To Continue Your Journey
             </p>
           </div>
         </div>
@@ -146,7 +146,7 @@ return (
           <button
             type="submit"
             className="btn btn-primary w-full h-14 text-lg font-semibold rounded-xl
-              shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40
+               shadow-xl shadow-primary/40
               hover:scale-[1.02] active:scale-[0.98]
               transition-all duration-200
               disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
@@ -173,7 +173,7 @@ return (
 
         <div className="text-center pt-0">
           <p className="text-lg text-base-content/70">
-            Don&apos;t have an account?{" "}
+            Don&apos;t Have an Account?{" "}
             <Link
               to="/signup"
               className="font-semibold text-primary
