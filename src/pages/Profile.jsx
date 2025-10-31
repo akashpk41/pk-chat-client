@@ -81,8 +81,8 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row items-center gap-8 p-8 bg-gradient-to-br from-base-200/80 to-base-300/80 rounded-2xl border border-base-300/50">
                 <div className="relative group">
                   {/* Glowing Background - Multiple Layers */}
-                  <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 rounded-full animate-pulse opacity-30 blur-2xl group-hover:opacity-50 transition-opacity duration-300" />
-                  <div className="absolute -inset-2 bg-gradient-to-br from-primary to-secondary rounded-full opacity-20 blur-lg group-hover:opacity-30 transition-opacity duration-300" />
+                  <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 rounded-full animate-pulse opacity-60 blur-2xl group-hover:opacity-50 transition-opacity duration-300" />
+                  <div className="absolute -inset-2 bg-gradient-to-br from-primary to-secondary rounded-full opacity-50 blur-lg group-hover:opacity-60 transition-opacity duration-300" />
 
                   <img
                     src={selectedImg || authUser?.profilePic || "avatar3.png"}
@@ -285,55 +285,63 @@ const Profile = () => {
             </div>
           </div>
 
-        {/* Security Notice */}
-<div className="alert bg-gradient-to-br from-base-100 to-base-200 border-2 border-primary/30 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
-  <div className="p-2 rounded-lg bg-primary/10">
-    <Shield className="w-6 h-6 text-primary" />
-  </div>
-  <div>
-    <h3 className="font-bold text-lg text-base-content">Your account is secure</h3>
-    <p className="text-sm text-base-content/70 font-medium">
-      We use industry-standard encryption to protect your data
-    </p>
-  </div>
-</div>
+          {/* Security Notice */}
+          <div className="alert bg-gradient-to-br from-base-100 to-base-200 border-2 border-primary/30 shadow-xl hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Shield className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <h3 className="font-bold text-lg text-base-content">
+                Your account is secure
+              </h3>
+              <p className="text-sm text-base-content/70 font-medium">
+                We use industry-standard encryption to protect your data
+              </p>
+            </div>
+          </div>
 
-{/* Quick Links */}
-<div className="grid sm:grid-cols-2 gap-4">
-  <Link
-    to="/"
-    className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
-  >
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/20">
-      <MessageSquare className="w-6 h-6 text-primary" />
-    </div>
-    <div className="flex-1">
-      <h3 className="font-bold text-lg text-base-content">Go to Home</h3>
-      <p className="text-sm text-base-content/60">Start chatting with friends</p>
-    </div>
-    <div className="text-primary group-hover:translate-x-1 transition-transform">
-      →
-    </div>
-  </Link>
+          {/* Quick Links */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Link
+              to="/"
+              className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg shadow-primary/20">
+                <MessageSquare className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg text-base-content">
+                  Go to Home
+                </h3>
+                <p className="text-sm text-base-content/60">
+                  Start chatting with friends
+                </p>
+              </div>
+              <div className="text-primary group-hover:translate-x-1 transition-transform">
+                →
+              </div>
+            </Link>
 
-  <Link
-    to="/settings"
-    className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-secondary/50 hover:shadow-xl transition-all duration-300 group"
-  >
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-90 transition-all duration-300 shadow-lg shadow-secondary/20">
-      <Settings className="w-6 h-6 text-secondary" />
-    </div>
-    <div className="flex-1">
-      <h3 className="font-bold text-lg text-base-content">Settings</h3>
-      <p className="text-sm text-base-content/60">Customize your experience</p>
-    </div>
-    <div className="text-secondary group-hover:translate-x-1 transition-transform">
-      →
-    </div>
-  </Link>
-</div>
-
-
+            <Link
+              to="/settings"
+              className="flex items-center gap-4 p-5 bg-gradient-to-br from-base-100 to-base-200 rounded-xl border-2 border-base-300 hover:border-secondary/50 hover:shadow-xl transition-all duration-300 group"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-90 transition-all duration-300 shadow-lg shadow-secondary/20">
+                <Settings className="w-6 h-6 text-secondary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg text-base-content">
+                  Settings
+                </h3>
+                <p className="text-sm text-base-content/60">
+                  Customize your experience
+                </p>
+              </div>
+              <div className="text-secondary group-hover:translate-x-1 transition-transform">
+                →
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

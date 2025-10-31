@@ -5,7 +5,15 @@ import MessageInput from "./MessageInput";
 import ChatHeader from "./ChatHeader";
 import { useAuthStore } from "../../store/useAuthStore";
 import { formatMessageTime, getRelativeTime } from "../../lib/formateTime";
-import { Check, CheckCheck, Clock, X, MoreVertical, Edit2, Trash2 } from "lucide-react";
+import {
+  Check,
+  CheckCheck,
+  Clock,
+  X,
+  MoreVertical,
+  Edit2,
+  Trash2,
+} from "lucide-react";
 
 const ChatContainer = () => {
   const {
@@ -296,11 +304,29 @@ const ChatContainer = () => {
                 />
               </div>
               <div className="absolute bottom-3 right-3">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="drop-shadow-xl">
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="drop-shadow-xl"
+                >
                   <circle cx="12" cy="12" r="11" fill="url(#blueGradient)" />
-                  <path d="M8 12.5l2.5 2.5L16 9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M8 12.5l2.5 2.5L16 9"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                   <defs>
-                    <linearGradient id="blueGradient" x1="0" y1="0" x2="24" y2="24">
+                    <linearGradient
+                      id="blueGradient"
+                      x1="0"
+                      y1="0"
+                      x2="24"
+                      y2="24"
+                    >
                       <stop offset="0%" stopColor="#0088ff" />
                       <stop offset="100%" stopColor="#0066ff" />
                     </linearGradient>
@@ -315,7 +341,11 @@ const ChatContainer = () => {
               </h3>
 
               <div className="badge badge-primary badge-lg gap-2 px-4 py-3">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
                   <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                 </svg>
@@ -343,7 +373,9 @@ const ChatContainer = () => {
           return (
             <div
               key={message._id || message.tempId || Math.random()}
-              className={`flex items-end gap-2 ${isSentByMe ? "justify-end" : "justify-start"}`}
+              className={`flex items-end gap-2 ${
+                isSentByMe ? "justify-end" : "justify-start"
+              }`}
             >
               {/* Avatar - left side */}
               {!isSentByMe && (
@@ -356,9 +388,15 @@ const ChatContainer = () => {
                 </div>
               )}
 
-              <div className={`flex flex-col max-w-[75%] sm:max-w-[60%] ${isSentByMe ? "items-end" : "items-start"}`}>
+              <div
+                className={`flex flex-col max-w-[75%] sm:max-w-[60%] ${
+                  isSentByMe ? "items-end" : "items-start"
+                }`}
+              >
                 {/* Timestamp */}
-                <p className={`text-xs mb-1.5 px-2 text-base-content/50 font-medium`}>
+                <p
+                  className={`text-xs mb-1.5 px-2 text-base-content/50 font-medium`}
+                >
                   {getRelativeTime(message.createdAt)}
                 </p>
 
@@ -389,7 +427,9 @@ const ChatContainer = () => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setShowMenu(showMenu === message._id ? null : message._id);
+                            setShowMenu(
+                              showMenu === message._id ? null : message._id
+                            );
                           }}
                           className="btn btn-xs btn-circle bg-base-200 hover:bg-base-300 border-none shadow-md"
                         >
@@ -404,7 +444,7 @@ const ChatContainer = () => {
                               className="w-full px-4 py-2 text-left text-sm text-warning hover:bg-base-200 flex items-center gap-2 transition-colors"
                             >
                               <Edit2 className="w-4 h-4" />
-                              <span >Edit</span>
+                              <span>Edit</span>
                             </button>
                             <button
                               onClick={() => handleDeleteClick(message._id)}
@@ -431,7 +471,7 @@ const ChatContainer = () => {
                             setSelectedImage(message.image);
                           }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-200 transition-opacity pointer-events-none rounded-xl" />
                       </div>
                     )}
 
@@ -440,7 +480,9 @@ const ChatContainer = () => {
                         {message.text}
                         {/* ✅ Show (Edited) label */}
                         {message.edited && !isDeleted && (
-                          <span className="text-xs ml-2 opacity-70">(Edited)</span>
+                          <span className="text-xs ml-2 opacity-70">
+                            (Edited)
+                          </span>
                         )}
                       </p>
                     )}
@@ -569,10 +611,7 @@ const ChatContainer = () => {
             />
 
             <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={handleCancelEdit}
-                className="btn btn-outline"
-              >
+              <button onClick={handleCancelEdit} className="btn btn-outline">
                 Cancel
               </button>
               <button

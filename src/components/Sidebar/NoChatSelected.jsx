@@ -46,7 +46,7 @@ const NoChatSelected = () => {
           <Zap className="w-4 h-4 text-primary" />
         </div>
         <div
-          className="absolute bottom-[15%] right-[25%] animate-bounce opacity-30"
+          className="absolute bottom-[15%] right-[25%] animate-bounce opacity-50"
           style={{ animationDuration: "4.8s", animationDelay: "2.5s" }}
         >
           <Heart className="w-3 h-3 text-secondary" />
@@ -149,7 +149,9 @@ const NoChatSelected = () => {
           <div className="px-4 py-3 rounded-xl bg-gradient-to-br from-base-100 to-base-200 border-2 border-primary/30 backdrop-blur-sm shadow-lg hover:shadow-xl hover:border-primary/50 transition-all duration-300">
             <p className="text-sm font-semibold text-base-content flex items-center gap-2 justify-center">
               <Sparkles className="w-4 h-4 text-primary animate-pulse flex-shrink-0" />
-              <span>Select a conversation from the sidebar to start chatting</span>
+              <span>
+                Select a conversation from the sidebar to start chatting
+              </span>
             </p>
           </div>
         </div>

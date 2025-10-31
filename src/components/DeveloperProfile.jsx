@@ -63,7 +63,7 @@ const DeveloperProfile = () => {
           <div className="relative z-10 text-center">
             {/* Profile Image */}
             <div className="relative w-72 h-72 mx-auto mb-4">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full animate-pulse opacity-20 blur-md" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-full animate-pulse opacity-50 blur-md" />
               <img
                 src="https://i.ibb.co.com/GhZWtVc/1740218980929.jpg"
                 alt="Akash PK"
@@ -125,7 +125,6 @@ const DeveloperProfile = () => {
                       title={social.name}
                     >
                       <Icon className="text-3xl" />
-
                     </a>
                   );
                 })}

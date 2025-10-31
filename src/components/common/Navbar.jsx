@@ -67,7 +67,7 @@ const Navbar = () => {
             >
               <div className="relative">
                 <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-primary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-md opacity-0 group-hover:opacity-200 transition-opacity"></div>
               </div>
               <span className="hidden sm:inline font-medium">Settings</span>
             </Link>
@@ -99,7 +99,7 @@ const Navbar = () => {
                           />
                         </div>
                       </div>
-                      <div className="absolute inset-0 bg-secondary/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <div className="absolute inset-0 bg-secondary/20 rounded-full blur-md opacity-0 group-hover:opacity-200 transition-opacity"></div>
                     </div>
                   )}
                   <span className="hidden sm:inline font-medium">Profile</span>
@@ -111,7 +111,7 @@ const Navbar = () => {
                 >
                   <div className="relative">
                     <LogOut className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-                    <div className="absolute inset-0 bg-error/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-error/20 rounded-full blur-md opacity-0 group-hover:opacity-200 transition-opacity"></div>
                   </div>
                   <span className="hidden sm:inline font-medium">Logout</span>
                 </button>
