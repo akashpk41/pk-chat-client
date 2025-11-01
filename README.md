@@ -65,13 +65,13 @@ The frontend of PK Chat handles:
 
 ## 📸 Preview / Screenshot Section
 
-| Login Page                                                    | Main Chat Interface                                                            |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| ![Login](https://via.placeholder.com/600x350?text=Login+Page) | ![Chat Interface](https://via.placeholder.com/600x350?text=Main+App+Interface) |
+| Login Page                                        | Main Chat Interface                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------- |
+| ![Login](https://i.ibb.co.com/xKT5ncV2/login.jpg) | ![Chat Interface](https://i.ibb.co.com/JjgTXqV9/chat-interface.jpg) |
 
-| Inbox                                                    | Settings                                                       | Profile                                                      |
-| -------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------ |
-| ![Inbox](https://via.placeholder.com/300x200?text=Inbox) | ![Settings](https://via.placeholder.com/300x200?text=Settings) | ![Profile](https://via.placeholder.com/300x200?text=Profile) |
+| Inbox                                             | Settings                                                | Profile                                               |
+| ------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------- |
+| ![Inbox](https://i.ibb.co.com/WNgMM5hj/inbox.jpg) | ![Settings](https://i.ibb.co.com/nqtNcHNn/settings.jpg) | ![Profile](https://i.ibb.co.com/k2RMyjxP/profile.jpg) |
 
 ---
 
