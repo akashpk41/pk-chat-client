@@ -1,26 +1,23 @@
-import { Navigate, Route, Routes } from "react-router";
-import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
-import Settings from "./pages/Settings";
-import Profile from "./pages/Profile";
-import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-import { Loader } from "lucide-react";
-import Loading from "./components/common/Loading";
 import { Toaster } from "react-hot-toast";
-import { useThemeStore } from "./store/useThemeStore";
+import { Navigate, Route, Routes } from "react-router";
+import Loading from "./components/common/Loading";
 import Navbar from "./components/common/Navbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import SignUp from "./pages/SignUp";
+import { useAuthStore } from "./store/useAuthStore";
+import { useThemeStore } from "./store/useThemeStore";
 
 function App() {
-  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
   const { theme } = useThemeStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  // console.log({ authUser });
-// console.log(onlineUsers)
 
   // show loader until the user load
 
@@ -29,7 +26,10 @@ function App() {
   }
 
   return (
-    <div data-theme={theme}className="min-h-screen  bg-base-100 text-base-content transition-colors duration-300">
+    <div
+      data-theme={theme}
+      className="min-h-screen  bg-base-100 text-base-content transition-colors duration-300"
+    >
       <Navbar />
       <Routes>
         <Route
